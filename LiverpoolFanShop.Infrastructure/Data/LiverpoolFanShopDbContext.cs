@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LiverpoolFanShop.Infrastructure.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class LiverpoolFanShopDbContext : IdentityDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public LiverpoolFanShopDbContext(DbContextOptions<LiverpoolFanShopDbContext> options)
             : base(options)
         {
         }
