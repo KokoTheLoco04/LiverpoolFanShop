@@ -1,4 +1,4 @@
-using LiverpoolFanShop.Data;
+using LiverpoolFanShop.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
