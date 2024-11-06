@@ -10,4 +10,14 @@
     <ProjectReference Include="..\LiverpoolFanShop.Infrastructure\LiverpoolFanShop.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Constants\" />
+    <Folder Include="Contracts\" />
+    <Folder Include="Enumerations\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Models\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>
