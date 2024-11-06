@@ -8,11 +8,26 @@ namespace LiverpoolFanShop.Infrastructure.Constants
 {
     public static class DataConstants
     {
-        public const int NameMaxLength = 50;
-
-        public const int PasswordMaxLength = 16;
+        //Product
+        public const int ProductNameMinLength = 50;
+        public const int ProductNameMaxLength = 50;
 
         public const int DescriptionMinLength = 15;
         public const int DescriptionMaxLength = 75;
+
+        public const string ProductPriceMinimum = "0";
+        public const string ProductPriceMaximum = "300000";
+
+        //Category
+        public const int CategoryNameMinLength = 3;
+        public const int CategoryNameMaxLength = 20;
+
+
+        //ApplicationUser
+        public const int FirstNameMinLength = 2;
+        public const int FirstNameMaxLength = 15;
+
+        public const int LastNameMinLength = 3;
+        public const int LastNameMaxLength = 18;
     }
 }

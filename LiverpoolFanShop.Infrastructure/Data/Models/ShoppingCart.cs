@@ -18,7 +18,7 @@ namespace LiverpoolFanShop.Infrastructure.Data.Models
         public int UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
-        public IdentityUser User { get; set; } = null!;
+        public ApplicationUser User { get; set; } = null!;
 
         public IEnumerable<ShoppingCartProduct> ShoppingCartProducts { get; set; } = new HashSet<ShoppingCartProduct>();
     }

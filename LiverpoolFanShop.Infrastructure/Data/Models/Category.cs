@@ -14,7 +14,7 @@ namespace LiverpoolFanShop.Infrastructure.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(NameMaxLength)]
+        [MaxLength(CategoryNameMaxLength)]
         public string Name { get; set; } = string.Empty;
 
         public IEnumerable<Product> Products { get; set; } = new HashSet<Product>();

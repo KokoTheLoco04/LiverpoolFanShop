@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <Folder Include="Data\Common\" />
-    <Folder Include="Data\SeedDb\" />
   </ItemGroup>
 
 </Project>

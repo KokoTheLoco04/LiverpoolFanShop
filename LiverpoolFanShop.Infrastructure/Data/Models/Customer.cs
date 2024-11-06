@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,16 +16,10 @@ namespace LiverpoolFanShop.Infrastructure.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(NameMaxLength)]
-        public string Username { get; set; } = string.Empty;
+        public int UserId { get; set; }
 
-        [Required]
-        [MaxLength(NameMaxLength)]
-        public string Email { get; set; } = string.Empty;
-
-        //[Required]
-        //[MaxLength(PasswordMaxLength)]
-        //public string Password { get; set; } = string.Empty;
+        [ForeignKey(nameof(UserId))]
+        public ApplicationUser User { get; set; } = null!;
 
         public IEnumerable<Order> Orders { get; set; } = new HashSet<Order>();
         public ShoppingCart ShoppingCart { get; set; } = null!;

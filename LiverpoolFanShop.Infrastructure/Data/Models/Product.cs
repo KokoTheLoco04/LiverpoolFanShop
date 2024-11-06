@@ -15,7 +15,7 @@ namespace LiverpoolFanShop.Infrastructure.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(NameMaxLength)]
+        [MaxLength(ProductNameMaxLength)]
         public string Name { get; set; } = string.Empty;
 
         [Required]
