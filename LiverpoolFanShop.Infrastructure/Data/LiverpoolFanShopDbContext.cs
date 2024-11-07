@@ -30,9 +30,9 @@ namespace LiverpoolFanShop.Infrastructure.Data
 
             modelBuilder.Entity<ShoppingCart>()
                 .HasOne(sc => sc.User)
-               .WithOne()
-               .HasForeignKey<ShoppingCart>(sc => sc.UserId)
-               .OnDelete(DeleteBehavior.Restrict);
+                .WithOne()
+                .HasForeignKey<ShoppingCart>(sc => sc.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.User)
