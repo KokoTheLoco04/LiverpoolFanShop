@@ -22,6 +22,26 @@ namespace LiverpoolFanShop.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<OrderProduct>()
+                .HasKey(op => new { op.OrderId, op.ProductId });
+
+            modelBuilder.Entity<ShoppingCartProduct>()
+                .HasKey(scp => new {scp.ProductId, scp.ShoppingCartId});
+
+            modelBuilder.Entity<ShoppingCart>()
+                .HasOne(sc => sc.User)
+               .WithOne()
+               .HasForeignKey<ShoppingCart>(sc => sc.UserId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.User)
+                .WithMany()
+                .HasForeignKey(o => o.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+
             base.OnModelCreating(modelBuilder);
         }
     }
