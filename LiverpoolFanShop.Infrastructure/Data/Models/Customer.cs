@@ -22,6 +22,11 @@ namespace LiverpoolFanShop.Infrastructure.Data.Models
         public ApplicationUser User { get; set; } = null!;
 
         public IEnumerable<Order> Orders { get; set; } = new HashSet<Order>();
+
+        [Required]
+        public int ShoppingCartId { get; set; }
+
+        [ForeignKey(nameof(ShoppingCartId))]
         public ShoppingCart ShoppingCart { get; set; } = null!;
     }
 }

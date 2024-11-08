@@ -1,4 +1,4 @@
-﻿using LiverpoolFanShop.Infrastructure.Data.Models;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace LiverpoolFanShop.Infrastructure.Data.SeedDb
 {
-    internal class ProductConfiguration : IEntityTypeConfiguration<Product>
+    public class UserClaimsConfiguration : IEntityTypeConfiguration<IdentityUserClaim<string>>
     {
-        public void Configure(EntityTypeBuilder<Product> builder)
+        public void Configure(EntityTypeBuilder<IdentityUserClaim<string>> builder)
         {
             var data = new SeedData();
 
-            builder.HasData(new Product[] { data.Jersey, data.Scarf, data.Jacket, data.Cup, data.Bottle, data.BadgeSet });
+            builder.HasData(data.CustomerUserClaim, data.GuestUserClaim, data.AdminUserClaim);
         }
     }
 }

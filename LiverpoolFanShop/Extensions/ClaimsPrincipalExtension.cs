@@ -1,4 +1,4 @@
-﻿using System.Security.Claims;
+﻿using static LiverpoolFanShop.Core.Constants.AdministratorConstants;
 
 namespace System.Security.Claims
 {
@@ -9,9 +9,9 @@ namespace System.Security.Claims
             return user.FindFirstValue(ClaimTypes.NameIdentifier);
         }
 
-        /*public static bool IsAdmin(this ClaimsPrincipal user)
+        public static bool IsAdmin(this ClaimsPrincipal user)
         {
             return user.IsInRole(AdminRole);
-        }*/
+        }
     }
 }

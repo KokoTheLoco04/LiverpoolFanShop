@@ -112,7 +112,7 @@ namespace LiverpoolFanShop.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("LiverpoolFanShop.Infrastructure.Data.Models.Customer", b =>
@@ -136,7 +136,7 @@ namespace LiverpoolFanShop.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Customers");
+                    b.ToTable("Customers", (string)null);
                 });
 
             modelBuilder.Entity("LiverpoolFanShop.Infrastructure.Data.Models.Order", b =>
@@ -166,7 +166,7 @@ namespace LiverpoolFanShop.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("LiverpoolFanShop.Infrastructure.Data.Models.OrderProduct", b =>
@@ -187,7 +187,7 @@ namespace LiverpoolFanShop.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderProducts");
+                    b.ToTable("OrderProducts", (string)null);
                 });
 
             modelBuilder.Entity("LiverpoolFanShop.Infrastructure.Data.Models.Product", b =>
@@ -228,7 +228,7 @@ namespace LiverpoolFanShop.Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("LiverpoolFanShop.Infrastructure.Data.Models.ShoppingCart", b =>
@@ -248,7 +248,7 @@ namespace LiverpoolFanShop.Infrastructure.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("ShoppingCarts");
+                    b.ToTable("ShoppingCarts", (string)null);
                 });
 
             modelBuilder.Entity("LiverpoolFanShop.Infrastructure.Data.Models.ShoppingCartProduct", b =>
@@ -269,7 +269,7 @@ namespace LiverpoolFanShop.Infrastructure.Migrations
 
                     b.HasIndex("ShoppingCartId");
 
-                    b.ToTable("ShoppingCartProducts");
+                    b.ToTable("ShoppingCartProducts", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
