@@ -6,7 +6,8 @@ namespace System.Security.Claims
     {
         public static string Id(this ClaimsPrincipal user)
         {
-            return user.FindFirstValue(ClaimTypes.NameIdentifier);
+            var id = user.FindFirstValue(ClaimTypes.NameIdentifier);
+            return id ?? throw new InvalidOperationException("User does not have a valid NameIdentifier claim.");
         }
 
         public static bool IsAdmin(this ClaimsPrincipal user)

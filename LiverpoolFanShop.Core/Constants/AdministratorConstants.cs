@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LiverpoolFanShop.Core.Constants
 {
-    public class AdministratorConstants
+    public static class AdministratorConstants
     {
         public const string AdminRole = "Administrator";
         public const string AdminAreaName = "Admin";
