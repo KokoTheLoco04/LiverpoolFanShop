@@ -13,7 +13,7 @@ namespace LiverpoolFanShop.Infrastructure.Constants
         public const int ProductNameMaxLength = 50;
 
         public const int DescriptionMinLength = 15;
-        public const int DescriptionMaxLength = 75;
+        public const int DescriptionMaxLength = 100;
 
         public const string ProductPriceMinimum = "0";
         public const string ProductPriceMaximum = "300000";

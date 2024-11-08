@@ -60,107 +60,6 @@ namespace LiverpoolFanShop.Infrastructure.Data.SeedDb
             SeedCustomer();
         }
 
-        private void SeedUsers()
-        {
-            var hasher = new PasswordHasher<ApplicationUser>();
-
-            CustomerUser = new ApplicationUser()
-            {
-                Id = "dea12856-c198-4129-b3f3-b893d8395082",
-                UserName = "customer@mail.com",
-                NormalizedUserName = "customer@mail.com",
-                Email = "customer@mail.com",
-                NormalizedEmail = "customer@mail.com",
-                FirstName = "Customer",
-                LastName = "Customerov"
-            };
-
-            CustomerUserClaim = new IdentityUserClaim<string>()
-            {
-                Id = 1,
-                ClaimType = UserFullNameClaim,
-                ClaimValue = "Customer Customerov",
-                UserId = "dea12856-c198-4129-b3f3-b893d8395082"
-            };
-
-            CustomerUser.PasswordHash =
-                 hasher.HashPassword(CustomerUser, "customer123");
-
-            GuestUser = new ApplicationUser()
-            {
-                Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
-                UserName = "guest@mail.com",
-                NormalizedUserName = "guest@mail.com",
-                Email = "guest@mail.com",
-                NormalizedEmail = "guest@mail.com",
-                FirstName = "Guest",
-                LastName = "Guestov"
-            };
-
-            GuestUserClaim = new IdentityUserClaim<string>()
-            {
-                Id = 2,
-                ClaimType = UserFullNameClaim,
-                ClaimValue = "Guest Guestov",
-                UserId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"
-            };
-
-            GuestUser.PasswordHash =
-            hasher.HashPassword(CustomerUser, "guest123");
-
-            AdminUser = new ApplicationUser()
-            {
-                Id = "e43ce836-997d-4927-ac59-74e8c41bbfd3",
-                UserName = "admin@mail.com",
-                NormalizedUserName = "ADMIN@MAIL.COM",
-                Email = "admin@mail.com",
-                NormalizedEmail = "ADMIN@MAIL.COM",
-                FirstName = "Great",
-                LastName = "Admin"
-            };
-
-            AdminUserClaim = new IdentityUserClaim<string>()
-            {
-                Id = 3,
-                ClaimType = UserFullNameClaim,
-                UserId = "e43ce836-997d-4927-ac59-74e8c41bbfd3",
-                ClaimValue = "Great Admin"
-            };
-
-            AdminUser.PasswordHash =
-            hasher.HashPassword(AdminUser, "admin123");
-        }
-
-        private void SeedShoppingCart()
-        {
-            CustomerShoppingCart = new ShoppingCart
-            {
-                Id = 1
-            };
-
-            AdminShoppingCart = new ShoppingCart
-            {
-                Id = 2
-            };
-        }
-
-        private void SeedCustomer()
-        {
-            Customer = new Customer()
-            {
-                Id = 1,
-                UserId = CustomerUser.Id,
-                ShoppingCartId = CustomerShoppingCart.Id
-            };
-
-            AdminCustomer = new Customer()
-            {
-                Id = 3,
-                UserId = AdminUser.Id,
-                ShoppingCartId = AdminShoppingCart.Id
-            };
-        }
-
         private void SeedCategories()
         {
             JerseyCategory = new Category
@@ -272,6 +171,109 @@ namespace LiverpoolFanShop.Infrastructure.Data.SeedDb
                 isDeleted = false,
                 CategoryId = 6  // Collections
             };
+        }
+
+        private void SeedShoppingCart()
+        {
+            CustomerShoppingCart = new ShoppingCart
+            {
+                Id = 1,
+                UserId = CustomerUser.Id
+            };
+
+            AdminShoppingCart = new ShoppingCart
+            {
+                Id = 2,
+                UserId = AdminUser.Id
+            };
+        }
+
+        private void SeedCustomer()
+        {
+            Customer = new Customer()
+            {
+                Id = 1,
+                UserId = CustomerUser.Id,
+                ShoppingCartId = CustomerShoppingCart.Id
+            };
+
+            AdminCustomer = new Customer()
+            {
+                Id = 3,
+                UserId = AdminUser.Id,
+                ShoppingCartId = AdminShoppingCart.Id
+            };
+        }
+
+        private void SeedUsers()
+        {
+            var hasher = new PasswordHasher<ApplicationUser>();
+
+            CustomerUser = new ApplicationUser()
+            {
+                Id = "6c5e5ff5-d61f-419d-8e0c-290b05e27e87",
+                UserName = "customer@mail.com",
+                NormalizedUserName = "customer@mail.com",
+                Email = "customer@mail.com",
+                NormalizedEmail = "customer@mail.com",
+                FirstName = "Customer",
+                LastName = "Customerov"
+            };
+
+            CustomerUserClaim = new IdentityUserClaim<string>()
+            {
+                Id = 1,
+                ClaimType = UserFullNameClaim,
+                ClaimValue = "Customer Customerov",
+                UserId = "6c5e5ff5-d61f-419d-8e0c-290b05e27e87"
+            };
+
+            CustomerUser.PasswordHash =
+                 hasher.HashPassword(CustomerUser, "customer123");
+
+            GuestUser = new ApplicationUser()
+            {
+                Id = "d8b8354a-d93e-4887-8390-3ba136739184",
+                UserName = "guest@mail.com",
+                NormalizedUserName = "guest@mail.com",
+                Email = "guest@mail.com",
+                NormalizedEmail = "guest@mail.com",
+                FirstName = "Guest",
+                LastName = "Guestov"
+            };
+
+            GuestUserClaim = new IdentityUserClaim<string>()
+            {
+                Id = 2,
+                ClaimType = UserFullNameClaim,
+                ClaimValue = "Guest Guestov",
+                UserId = "d8b8354a-d93e-4887-8390-3ba136739184"
+            };
+
+            GuestUser.PasswordHash =
+            hasher.HashPassword(CustomerUser, "guest123");
+
+            AdminUser = new ApplicationUser()
+            {
+                Id = "b0b67914-3b5a-4bb7-b0ac-37c4c1c03944",
+                UserName = "admin@mail.com",
+                NormalizedUserName = "ADMIN@MAIL.COM",
+                Email = "admin@mail.com",
+                NormalizedEmail = "ADMIN@MAIL.COM",
+                FirstName = "Great",
+                LastName = "Admin"
+            };
+
+            AdminUserClaim = new IdentityUserClaim<string>()
+            {
+                Id = 3,
+                ClaimType = UserFullNameClaim,
+                UserId = "b0b67914-3b5a-4bb7-b0ac-37c4c1c03944",
+                ClaimValue = "Great Admin"
+            };
+
+            AdminUser.PasswordHash =
+            hasher.HashPassword(AdminUser, "admin123");
         }
 
     }

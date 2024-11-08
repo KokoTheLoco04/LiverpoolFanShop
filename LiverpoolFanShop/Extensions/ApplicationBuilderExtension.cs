@@ -12,16 +12,19 @@ namespace Microsoft.AspNetCore.Builder
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            if (userManager != null && roleManager != null && await roleManager.RoleExistsAsync(AdminRole) == false)
+            if (roleManager != null && await roleManager.RoleExistsAsync(AdminRole) == false)
             {
                 var role = new IdentityRole(AdminRole);
                 await roleManager.CreateAsync(role);
+            }
 
-                var admin = await userManager.FindByEmailAsync("admin@mail.com");
+            if (userManager != null)
+            {
+                var admin = await userManager.FindByEmailAsync(AdminEmail);
 
-                if (admin != null)
+                if (admin != null && await userManager.IsInRoleAsync(admin, AdminRole) == false)
                 {
-                    await userManager.AddToRoleAsync(admin, role.Name);
+                    await userManager.AddToRoleAsync(admin, AdminRole);
                 }
             }
 
