@@ -38,8 +38,17 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapDefaultControllerRoute();
-app.MapRazorPages();
+//app.UseEndpoints(endpoints =>
+//{
+//endpoints.MapControllerRoute(
+//        name: "Admin",
+//        areaName: "Admin",
+//        pattern: "areas:exists/{controller=Home}/{action=Index}/{id}");
+
+    app.MapDefaultControllerRoute();
+    app.MapRazorPages();
+//});
+
 
 await app.CreateAdminRoleAsync();
 
