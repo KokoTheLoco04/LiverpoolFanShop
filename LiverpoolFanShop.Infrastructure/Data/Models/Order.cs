@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static LiverpoolFanShop.Infrastructure.Constants.DataConstants;
 
 namespace LiverpoolFanShop.Infrastructure.Data.Models
 {
@@ -26,6 +27,10 @@ namespace LiverpoolFanShop.Infrastructure.Data.Models
 
         [ForeignKey(nameof(UserId))]
         public ApplicationUser User { get; set; } = null!;
+
+        [Required]
+        [MaxLength(AddressMaxLength)]
+        public string Address { get; set; } = string.Empty;
 
         public IEnumerable<OrderProduct> OrderProducts { get; set; } = new HashSet<OrderProduct>();
     }

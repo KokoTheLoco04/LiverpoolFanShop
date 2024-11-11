@@ -29,5 +29,9 @@ namespace LiverpoolFanShop.Infrastructure.Constants
 
         public const int LastNameMinLength = 3;
         public const int LastNameMaxLength = 18;
+
+        //Order
+        public const int AddressMinLength = 20;
+        public const int AddressMaxLength = 100;
     }
 }

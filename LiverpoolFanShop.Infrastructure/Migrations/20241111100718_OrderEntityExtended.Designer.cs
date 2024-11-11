@@ -4,6 +4,7 @@ using LiverpoolFanShop.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LiverpoolFanShop.Infrastructure.Migrations
 {
     [DbContext(typeof(LiverpoolFanShopDbContext))]
-    partial class LiverpoolFanShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241111100718_OrderEntityExtended")]
+    partial class OrderEntityExtended
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
