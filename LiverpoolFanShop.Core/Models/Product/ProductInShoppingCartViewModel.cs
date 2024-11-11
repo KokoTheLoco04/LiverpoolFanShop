@@ -9,16 +9,12 @@ namespace LiverpoolFanShop.Core.Models.Product
 {
     public class ProductInShoppingCartViewModel
     {
-        public int Id { get; set; }
-
-        public string ShoppingCartProductId { get; set; } = string.Empty;
-
-        public string Name { get; set; } = string.Empty;
+        public int ProductId { get; set; }
+        public string ProductName { get; set; } = string.Empty;
+        public int Amount { get; set; } 
+        public decimal Price { get; set; } 
+        public decimal TotalPrice { get { return Price * Amount; } }
         public string ImageUrl { get; set; } = string.Empty;
-
-        public decimal Price { get; set; }
-
-        public int Amount { get; set; }
 
     }
 }
