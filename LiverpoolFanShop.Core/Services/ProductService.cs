@@ -1,34 +1,101 @@
 ﻿using LiverpoolFanShop.Core.Contracts;
+using LiverpoolFanShop.Core.Models.Category;
 using LiverpoolFanShop.Core.Models.Product;
 using LiverpoolFanShop.Core.Models.ServiceModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using LiverpoolFanShop.Infrastructure.Data.Common;
+using LiverpoolFanShop.Infrastructure.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LiverpoolFanShop.Core.Services
 {
     public class ProductService : IProductService
     {
-        public Task DecreaseProductAmountAsync(int productId, int amount)
+        private readonly IRepository repository;
+
+        public ProductService(IRepository _repository)
         {
-            throw new NotImplementedException();
+            repository = _repository;
+        }
+        public async Task DecreaseProductAmountAsync(int productId, int amount)
+        {
+            var product = await repository
+                .All<Product>()
+                .FirstOrDefaultAsync(p => p.Id == productId); 
+            
+            if (product != null)
+            {
+                product.AmountInStock -= amount; 
+                
+                if (product.AmountInStock < 0)
+                {
+                    product.AmountInStock = 0; 
+                } 
+                
+                await repository.SaveChangesAsync(); 
+            }
+            
         }
 
-        public Task<bool> DoesProductExistByIdAsync(int id)
+        public async Task<bool> DoesProductExistByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await repository.AllReadOnly<Product>().AnyAsync(p => p.Id == id);
         }
 
-        public Task<AllProductsFilteredAndPagedServiceModel> GetAllProductsAsync(AllProductsQueryModel queryModel)
+        public async Task<AllProductsFilteredAndPagedServiceModel> GetAllProductsAsync(AllProductsQueryModel queryModel)
         {
-            throw new NotImplementedException();
+            var productQuery = repository.AllReadOnly<Product>(); 
+
+            if (!string.IsNullOrWhiteSpace(queryModel.SearchTerm)) 
+            { 
+                productQuery = productQuery.Where(p => p.Name.Contains(queryModel.SearchTerm) 
+                                                    || p.Description.Contains(queryModel.SearchTerm)); 
+            }
+            
+            if (!string.IsNullOrWhiteSpace(queryModel.Category)) 
+            { 
+                productQuery = productQuery.Where(p => p.Category.Name == queryModel.Category); 
+            }
+            
+            var totalProducts = await productQuery.CountAsync(); 
+            var products = await productQuery
+                .Skip((queryModel.CurrentPage - 1) * queryModel.ProductsPerPage)
+                .Take(queryModel.ProductsPerPage)
+                .ToListAsync(); 
+            
+            return new AllProductsFilteredAndPagedServiceModel 
+            { 
+                TotalProducts = totalProducts, 
+                Products = products.Select(p => new ProductViewModel 
+                    {  
+                        Id = p.Id, 
+                        Name = p.Name, 
+                        Price = p.Price, 
+                        ImageUrl = p.ImageUrl 
+                })
+                .ToList() };
         }
 
-        public Task<ProductDetailsViewModel> GetProductByIdAsync(int id)
+        public async Task<ProductDetailsViewModel?> GetProductByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var product = await repository.AllReadOnly<Product>()
+                .Where(p => p.Id == id)
+                .Select(p => new ProductDetailsViewModel
+                { 
+                    Id = p.Id, 
+                    Name = p.Name, 
+                    Description = p.Description, 
+                    Price = p.Price, 
+                    ImageUrl = p.ImageUrl,
+                    AmountInStock = p.AmountInStock,
+                    Category = new ProductCategoryModel
+                    {
+                        Id = p.Category.Id,
+                        Name = p.Category.Name
+                    }
+                })
+                .FirstOrDefaultAsync();
+
+            return product ?? null;
         }
     }
 }

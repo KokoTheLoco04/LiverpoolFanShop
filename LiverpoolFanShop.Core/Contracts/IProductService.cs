@@ -12,7 +12,7 @@ namespace LiverpoolFanShop.Core.Contracts
     {
         Task<AllProductsFilteredAndPagedServiceModel> GetAllProductsAsync(AllProductsQueryModel queryModel);
 
-        Task<ProductDetailsViewModel> GetProductByIdAsync(int id);
+        Task<ProductDetailsViewModel?> GetProductByIdAsync(int id);
 
         Task<bool> DoesProductExistByIdAsync(int id);
 

@@ -22,5 +22,7 @@ namespace LiverpoolFanShop.Core.Models.Order
         public ApplicationUser ApplicationUser { get; set; } = null!;
 
         public List<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
+
+        public decimal TotalAmount => OrderProducts.Sum(op => op.Price);
     }
 }

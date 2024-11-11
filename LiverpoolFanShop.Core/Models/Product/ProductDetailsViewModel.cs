@@ -2,6 +2,7 @@
 namespace LiverpoolFanShop.Core.Models.Product
 {
     using System.ComponentModel.DataAnnotations.Schema;
+    using LiverpoolFanShop.Core.Models.Category;
     using LiverpoolFanShop.Infrastructure.Data.Models;
 
     public class ProductDetailsViewModel
@@ -13,9 +14,6 @@ namespace LiverpoolFanShop.Core.Models.Product
         public decimal Price { get; set; }
         public int AmountInStock { get; set; }
 
-        public int CategoryId { get; set; }
-
-        [ForeignKey(nameof(CategoryId))]
-        public Category Category { get; set; } = null!;
+        public ProductCategoryModel Category { get; set; } = new ProductCategoryModel();
     }
 }
