@@ -1,10 +1,20 @@
 ﻿@model IEnumerable<LiverpoolFanShop.Core.Models.Category.ProductCategoryModel>
-@using LiverpoolFanShop.Infrastructure.Data.Models
 @using Microsoft.AspNetCore.Identity
-@using Microsoft.AspNetCore.Authentication
+@using LiverpoolFanShop.Infrastructure.Data.Models
 @using System.Security.Claims
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
+
+@{
+    string username = string.Empty;
+    bool isAdmin = false;
+
+    if (SignInManager.IsSignedIn(User))
+    {
+        username = User.FindFirstValue(LiverpoolFanShop.Infrastructure.Constants.CustomClaims.UserFullNameClaim) ?? string.Empty;
+        isAdmin = User.IsInRole("Admin");
+    }
+}
 
 <!DOCTYPE html>
 <html>
@@ -55,23 +65,31 @@
             <ul class="navbar-nav ml-auto">
                 @if (SignInManager.IsSignedIn(User))
                 {
-                    var user = await UserManager.GetUserAsync(User);
-                    var fullName = User.FindFirst(LiverpoolFanShop.Infrastructure.Constants.CustomClaims.UserFullNameClaim)?.Value ?? "User";
-
                     <li class="nav-item">
-                        <span class="navbar-text">Hello, @fullName!</span>
+                        <span class="navbar-text">Hello, @username!</span>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Home/Logout">Logout</a>
+                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" method="post">
+                            <button type="submit" class="nav-link btn btn-link" style="color: white;">Logout</button>
+                        </form>
                     </li>
+                    @if (isAdmin)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Admin/AddProduct">Add Product</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Admin/EditProduct">Edit Product</a>
+                        </li>
+                    }
                 }
                 else
                 {
                     <li class="nav-item">
-                        <a class="nav-link" href="/Home/Login">Login</a>
+                        <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Home/Register">Register</a>
+                        <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Register</a>
                     </li>
                 }
             </ul>
@@ -92,6 +110,13 @@
             }
         </div>
     </div>
+    @if (isAdmin)
+    {
+        <div class="mt-4 p-5 bg-light text-center">
+            <h2 class="display-4">Hello, Admin!</h2>
+            <p class="lead mb-1 mt-3">This is your administrator area - you can <b>read</b>, <b>create</b>, <b>delete</b> and <b>edit</b> products. <br />You can <b>view</b> and <b>manage</b> all users and orders in the system.</p>
+        </div>
+    }
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 </body>
