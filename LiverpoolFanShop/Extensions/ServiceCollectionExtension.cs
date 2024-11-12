@@ -1,4 +1,6 @@
-﻿using LiverpoolFanShop.Infrastructure.Data;
+﻿using LiverpoolFanShop.Core.Contracts;
+using LiverpoolFanShop.Core.Services;
+using LiverpoolFanShop.Infrastructure.Data;
 using LiverpoolFanShop.Infrastructure.Data.Common;
 using LiverpoolFanShop.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
@@ -11,6 +13,12 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IProductCategoryService, ProductCategoryService>();
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<ICartService, CartService>();
+
             return services;
         }
 

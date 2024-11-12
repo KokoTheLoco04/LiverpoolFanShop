@@ -1,3 +1,4 @@
+using LiverpoolFanShop.Core.Contracts;
 using LiverpoolFanShop.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,15 +9,19 @@ namespace LiverpoolFanShop.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IProductCategoryService productService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IProductCategoryService _productService)
         {
             _logger = logger;
+            productService = _productService;
         }
 
-        public IActionResult Index()
+        [AllowAnonymous]
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var categories = await productService.AllCategoriesAsync();
+            return View(categories);
         }
 
 
