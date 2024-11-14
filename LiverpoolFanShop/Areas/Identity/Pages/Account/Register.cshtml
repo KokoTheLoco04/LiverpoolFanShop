@@ -1,7 +1,17 @@
 ﻿@page
+@using LiverpoolFanShop.Infrastructure.Data.Models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
 @model RegisterModel
-@{
-    ViewData["Title"] = "Register";
+
+@{ 
+    ViewData["Title"] = "Register"; 
+    ViewData["HideFooter"] = SignInManager.IsSignedIn(User);
+if (SignInManager.IsSignedIn(User)) 
+{ 
+        @await Html.PartialAsync("_AlreadyInTeamError", "You cannot register again because you're already logged in.")
+        return;
+} 
 }
 
 <h1>@ViewData["Title"]</h1>

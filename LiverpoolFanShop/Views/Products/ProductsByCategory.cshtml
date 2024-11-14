@@ -22,6 +22,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Products - Liverpool FC Fan Shop</title>
+    <link rel="stylesheet" href="~/css/site.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         .product-card {
@@ -33,16 +34,18 @@
                 transform: scale(1.05);
             }
 
-        .product-img {
-            height: 310px; /* Set fixed height */
-            object-fit: cover; /* Scale image to fill without distortion */
+        img {
+            width: 100%; /* Set a fixed width */
+            height: 250px; /* Set a fixed height */
+            object-fit: contain; /* Ensures the image covers the area without distortion */
+            object-position: center;
         }
 
         footer {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 15px;
+            padding: 10px;
             background-color: rgba(255, 255, 255, 0.9); /* Slightly opaque background */
             border-top: 1px solid #ddd;
             margin-top: 30px;
@@ -95,6 +98,10 @@
         .navbar-brand, .nav-link {
             color: #fff !important;
         }
+
+        .details-text{
+            color: rgba(255, 255, 255, 0.85);
+        }
     </style>
 </head>
 <body>
@@ -143,7 +150,7 @@
         </div>
     </nav>
     <div class="container mt-4">
-        <h1 class="text-center">Products</h1>
+        <h1 class="text-center details-text">Products</h1>
         <div class="row">
             @foreach (var product in Model)
             {

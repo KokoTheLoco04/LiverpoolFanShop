@@ -1,5 +1,4 @@
-﻿@using LiverpoolFanShop.Components
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -31,8 +30,10 @@
         </main>
     </div>
 
-    <footer>
-        <div style="display: flex; flex-direction: column; align-items: flex-start; padding-left: 10px;">
+    @if (ViewData["HideFooter"] == null || !(bool)ViewData["HideFooter"])
+    {
+        <footer>
+            <div style="display: flex; flex-direction: column; align-items: flex-start; padding-left: 10px;">
             <p style="margin: 0; font-weight: bold;">Contact us:</p>
             <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 5px;">
                 <p style="margin: 0;">Phone: <a href="tel:+0888888888">0888 888888</a></p>
@@ -41,8 +42,9 @@
                 <p style="margin: 0;">Address: Kyustendil, st.Hristo Botev №51</p>
             </div>
             <p style="margin-top: 10px;">&copy; @DateTime.Now.Year - YNWA Kaloyan Zahariev</p>
-        </div>
-    </footer>
+            </div>
+        </footer>
+    }
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

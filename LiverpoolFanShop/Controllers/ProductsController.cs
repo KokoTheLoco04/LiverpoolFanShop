@@ -32,11 +32,11 @@ namespace LiverpoolFanShop.Controllers
                 Name = product.Name,
                 Price = product.Price,
                 Description = product.Description,
-                ImageUrl = product.ImageUrl, // Make sure ImageUrl is assigned here
+                ImageUrl = product.ImageUrl,
                 AmountInStock = product.AmountInStock,
                 Category = new ProductCategoryModel 
                 { 
-                    Id = product.Id, 
+                    Id = product.Category.Id, 
                     Name = product.Name 
                 }
             };
