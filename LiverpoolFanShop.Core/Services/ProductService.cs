@@ -97,5 +97,21 @@ namespace LiverpoolFanShop.Core.Services
 
             return product ?? null;
         }
+
+        public async Task<IEnumerable<ProductViewModel>> GetProductsByCategoryAsync(int categoryId)
+        {
+            var products = await repository.AllReadOnly<Product>()
+                .Where(p => p.CategoryId == categoryId)
+                .Select(p => new ProductViewModel 
+                { 
+                    Id = p.Id, 
+                    Name = p.Name, 
+                    Price = p.Price, 
+                    ImageUrl = p.ImageUrl 
+                })
+                .ToListAsync(); 
+            
+            return products;
+        }
     }
 }

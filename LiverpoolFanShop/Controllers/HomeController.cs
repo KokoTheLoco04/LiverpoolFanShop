@@ -9,18 +9,18 @@ namespace LiverpoolFanShop.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IProductCategoryService productService;
+        private readonly IProductCategoryService categoryService;
 
-        public HomeController(ILogger<HomeController> logger, IProductCategoryService _productService)
+        public HomeController(ILogger<HomeController> logger, IProductCategoryService _categoryService)
         {
             _logger = logger;
-            productService = _productService;
+            categoryService = _categoryService;
         }
 
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            var categories = await productService.AllCategoriesAsync();
+            var categories = await categoryService.AllCategoriesAsync();
             return View(categories);
         }
 

@@ -17,5 +17,7 @@ namespace LiverpoolFanShop.Core.Contracts
         Task<bool> DoesProductExistByIdAsync(int id);
 
         Task DecreaseProductAmountAsync(int productId, int amount);
+
+        Task<IEnumerable<ProductViewModel>> GetProductsByCategoryAsync(int categoryId);
     }
 }

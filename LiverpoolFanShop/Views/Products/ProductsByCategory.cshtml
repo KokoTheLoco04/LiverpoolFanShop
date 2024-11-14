@@ -1,4 +1,4 @@
-﻿@model IEnumerable<LiverpoolFanShop.Core.Models.Category.ProductCategoryModel>
+﻿@model IEnumerable<LiverpoolFanShop.Core.Models.Product.ProductViewModel>
 @using Microsoft.AspNetCore.Identity
 @using LiverpoolFanShop.Infrastructure.Data.Models
 @using System.Security.Claims
@@ -21,60 +21,21 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Liverpool FC Fan Shop</title>
+    <title>Products - Liverpool FC Fan Shop</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            background: url('/images/layout/anfield.jpg') no-repeat center center fixed;
-            background-size: cover;
-            background-attachment: fixed;
-        }
-
-        .navbar {
-            background-color: rgba(200, 16, 46, 0.9); /* Liverpool red */
-        }
-
-        .navbar-brand, .nav-link {
-            color: #fff !important;
-        }
-
-        .container {
-            max-width: 80%;
-            margin: auto;
-            margin-top: 60px;
-            background-color: rgba(255, 255, 255, 0.9); /* Slightly opaque background */
-            border-radius: 10px;
-            padding: 20px;
-        }
-
-        .category-card {
+        .product-card {
             transition: transform 0.2s;
+            height: 100%; /* Ensures card fills available space */
         }
 
-            .category-card:hover {
+            .product-card:hover {
                 transform: scale(1.05);
             }
 
-        .category-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .category-card {
-            width: 200px;
-            height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #ffffff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        .product-img {
+            height: 310px; /* Set fixed height */
+            object-fit: cover; /* Scale image to fill without distortion */
         }
 
         footer {
@@ -117,6 +78,23 @@
             footer p.copyright {
                 margin: 0;
             }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background: url('/images/layout/anfield.jpg') no-repeat center center fixed;
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        .navbar {
+            background-color: rgba(200, 16, 46, 0.9); /* Liverpool red */
+        }
+
+        .navbar-brand, .nav-link {
+            color: #fff !important;
+        }
     </style>
 </head>
 <body>
@@ -165,29 +143,23 @@
         </div>
     </nav>
     <div class="container mt-4">
-        <h1 class="text-center">Shop by Category</h1>
+        <h1 class="text-center">Products</h1>
         <div class="row">
-            @foreach (var category in Model)
+            @foreach (var product in Model)
             {
                 <div class="col-md-4 mb-4">
-                    <div class="card category-card">
+                    <div class="card product-card">
+                        <img src="@product.ImageUrl" class="card-img-top product-img" alt="@product.Name">
                         <div class="card-body text-center">
-                            <a asp-controller="Products" asp-action="ProductsByCategory" asp-route-id="@category.Id">
-                            <h5 class="card-title">@category.Name</h5>
-                            </a>
+                            <h5 class="card-title">@product.Name</h5>
+                            <p class="card-text">@product.Price.ToString("C")</p>
+                            <a href="~/Products/Details/@product.Id" class="btn btn-primary">View Details</a>
                         </div>
                     </div>
                 </div>
             }
         </div>
     </div>
-    @if (isAdmin)
-    {
-        <div class="mt-4 p-5 bg-light text-center">
-            <h2 class="display-4">Hello, Admin!</h2>
-            <p class="lead mb-1 mt-3">This is your administrator area - you can <b>read</b>, <b>create</b>, <b>delete</b> and <b>edit</b> products. <br />You can <b>view</b> and <b>manage</b> all users and orders in the system.</p>
-        </div>
-    }
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 </body>

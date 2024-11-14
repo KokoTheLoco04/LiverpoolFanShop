@@ -19,7 +19,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    @*await Component.InvokeAsync(nameof(MainMenuComponent));*@
+                    @*await Component.InvokeAsync("MainMenuComponent");*@
                     <partial name="_LoginPartial" />
                 </div>
             </div>
@@ -31,9 +31,16 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; @DateTime.Now.Year - YNWA Kaloyan Zahariev
+    <footer>
+        <div style="display: flex; flex-direction: column; align-items: flex-start; padding-left: 10px;">
+            <p style="margin: 0; font-weight: bold;">Contact us:</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 5px;">
+                <p style="margin: 0;">Phone: <a href="tel:+0888888888">0888 888888</a></p>
+                <p style="margin: 0;">Email: <a href="mailto:admin@mail.bg">admin@mail.bg</a></p>
+                <p style="margin: 0;">Instagram: <a href="https://instagram.com/_tsk_zahariev_">_tsk_zahariev_</a></p>
+                <p style="margin: 0;">Address: Kyustendil, st.Hristo Botev №51</p>
+            </div>
+            <p style="margin-top: 10px;">&copy; @DateTime.Now.Year - YNWA Kaloyan Zahariev</p>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
