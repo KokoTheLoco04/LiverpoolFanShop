@@ -99,8 +99,16 @@
             color: #fff !important;
         }
 
-        .details-text{
-            color: rgba(255, 255, 255, 0.85);
+        .title-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .details-text {
+            color: black;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -150,7 +158,9 @@
         </div>
     </nav>
     <div class="container mt-4">
-        <h1 class="text-center details-text">Products</h1>
+        <div class="title-container">
+            <h1 class="text-center details-text">Products</h1>
+        </div>
         <div class="row">
             @foreach (var product in Model)
             {
@@ -159,7 +169,7 @@
                         <img src="@product.ImageUrl" class="card-img-top product-img" alt="@product.Name">
                         <div class="card-body text-center">
                             <h5 class="card-title">@product.Name</h5>
-                            <p class="card-text">@product.Price.ToString("C")</p>
+                            <p class="card-text">@product.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-GB"))</p>
                             <a href="~/Products/Details/@product.Id" class="btn btn-primary">View Details</a>
                         </div>
                     </div>

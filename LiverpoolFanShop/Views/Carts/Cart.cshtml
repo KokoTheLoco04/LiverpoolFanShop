@@ -1,0 +1,232 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Shopping Cart</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+
+        h2.text-danger {
+            font-size: 2rem;
+            text-transform: uppercase;
+        }
+
+        .cart-item-container {
+            display: flex;
+            flex-direction: column;
+            margin-top: 30px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 10px;
+        }
+
+            .cart-item img {
+                width: 100px;
+                height: auto;
+                max-height: 100px;
+                object-fit: cover;
+                margin-right: 15px;
+            }
+
+        .card-body {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-item .card-title {
+            font-size: 1rem;
+            font-weight: bold;
+            background-color: #f8d7da;
+            padding: 5px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+
+        .cart-item .card-text {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .btn-custom {
+            font-size: 0.9rem;
+            font-weight: bold;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        .btn-custom-danger {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+        }
+
+            .btn-custom-danger:hover {
+                background-color: #c82333;
+            }
+
+        .btn-custom-warning {
+            background-color: #ffc107;
+            color: white;
+            border: none;
+        }
+
+            .btn-custom-warning:hover {
+                background-color: #e0a800;
+            }
+
+        .total-container {
+            background-color: #ffffff;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            text-align: center;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+
+            .total-container h3 {
+                font-size: 1.25rem;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+            .action-buttons button {
+                width: 100%;
+                padding: 10px 20px; /* Adjusted width */
+                font-size: 0.9rem;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            .action-buttons .btn-danger {
+                background-color: #dc3545;
+                color: white;
+            }
+
+            .action-buttons .btn-success {
+                background-color: #28a745;
+                color: white;
+            }
+
+            .action-buttons button:hover {
+                opacity: 0.8;
+            }
+
+        .quantity-update {
+            display: flex;
+            justify-content: space-between;
+            gap: 5px;
+            align-items: center;
+        }
+
+            .quantity-update .input-group {
+                flex-grow: 1;
+                display: flex;
+            }
+        .input-group{
+            display: flex;
+            flex-direction: row;
+        }
+
+        .input-group input {
+            width: 20px;
+            height: 38px; /* Adjusted to match button height */
+        }
+
+        .input-group button {
+            height: 38px; /* Ensure same height as input */
+        }
+
+        .empty-cart {
+            text-align: center;
+            font-size: 1.25rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success text-center">
+            @TempData["Success"]
+        </div>
+    }
+
+    <h2 class="text-center text-danger mb-4">Your Shopping Cart</h2>
+
+    @if (Model.ShoppingCartProducts == null || Model.ShoppingCartProducts.Count == 0)
+    {
+        <div class="alert alert-info text-center">
+            <p>Your cart is empty. <a class="btn btn-primary" asp-action="Index" asp-controller="Home">Browse products</a></p>
+        </div>
+    }
+    else
+    {
+        <div class="cart-item-container">
+            @foreach (var item in Model.ShoppingCartProducts)
+            {
+                <div class="cart-item">
+                    <img src="@item.ImageUrl" alt="@item.ProductName" />
+                    <div class="card-body">
+                        <h5 class="card-title">@item.ProductName</h5>
+                        <p class="card-text">@item.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-GB"))</p>
+                        <p class="card-text">Quantity: @item.Amount</p>
+                        <form method="post" asp-action="RemoveFromCart" asp-route-productId="@item.ProductId">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-custom btn-custom-danger">Remove from Cart</button>
+                        </form>
+                        <form method="post" asp-action="UpdateQuantity" asp-route-productId="@item.ProductId" class="quantity-update mt-2">
+                            @Html.AntiForgeryToken()
+                            <div class="input-group">
+                                <input type="number" name="quantity" value="@item.Amount" min="1" class="form-control" />
+                                <button type="submit" class="btn btn-custom btn-custom-warning">Update Quantity</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="total-container">
+            <h3>Total: @ViewBag.CartTotal.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-GB"))</h3>
+            <div class="action-buttons">
+                <form method="post" asp-action="ClearCart">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger">Clear Cart</button>
+                </form>
+                <form method="post" asp-action="Checkout">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-success">Finish Order</button>
+                </form>
+            </div>
+        </div>
+    }
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

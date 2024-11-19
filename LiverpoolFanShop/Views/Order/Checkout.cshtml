@@ -1,0 +1,12 @@
+﻿@model LiverpoolFanShop.Core.Models.Order.MakeOrderInputViewModel
+
+<h1>Checkout</h1>
+
+<form asp-action="PlaceOrder" method="post">
+    <div class="form-group">
+        <label for="address">Shipping Address</label>
+        <textarea class="form-control" id="address" name="Address" rows="3" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-success">Place Order</button>
+</form>
+

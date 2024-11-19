@@ -1,17 +1,21 @@
 ﻿using LiverpoolFanShop.Core.Contracts;
 using LiverpoolFanShop.Core.Models.Category;
 using LiverpoolFanShop.Core.Models.Product;
+using LiverpoolFanShop.Core.Services;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Configuration;
 
 namespace LiverpoolFanShop.Controllers
 {
     public class ProductsController : BaseController
     {
         private readonly IProductService productService;
+        private readonly ICartService cartService;
 
-        public ProductsController(IProductService _productService)
+        public ProductsController(IProductService _productService, ICartService _cartService)
         {
             productService = _productService;
+            cartService = _cartService;
         }
         public async Task<IActionResult> ProductsByCategory(int id)
         {
