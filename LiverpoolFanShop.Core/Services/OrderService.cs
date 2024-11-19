@@ -1,5 +1,6 @@
 ﻿using LiverpoolFanShop.Core.Contracts;
 using LiverpoolFanShop.Core.Models.Order;
+using LiverpoolFanShop.Core.Models.Product;
 using LiverpoolFanShop.Infrastructure.Data.Common;
 using LiverpoolFanShop.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
@@ -19,41 +20,32 @@ namespace LiverpoolFanShop.Core.Services
         {
             repository = _repository;
         }
-        public async Task AddProductToOrderAsync(int productId, int amount, int orderId)
+        
+        public async Task<int> CreateOrderAsync(string userId, string address, List<ProductInShoppingCartViewModel> products)
         {
-            var order = await repository.GetByIdAsync<Order>(orderId);
-            
-            if (order == null) 
-            { 
-                throw new ArgumentException($"Order with ID {orderId} does not exist."); 
+            if (products == null || !products.Any())
+            {
+                throw new ArgumentException("Order must contain at least one product.");
             }
-            
-            var product = await repository.GetByIdAsync<Product>(productId); 
-            
-            if (product == null) 
-            { 
-                throw new ArgumentException($"Product with ID {productId} does not exist."); 
-            }
-            
-            var orderProduct = new OrderProduct 
-            { 
-                OrderId = orderId, 
-                ProductId = productId, 
-                Quantity = amount, 
-                Price = product.Price * amount 
-            }; 
-            
-            await repository.AddAsync(orderProduct); 
-            await repository.SaveChangesAsync();
-        }
 
-        public async Task<int> CreateOrderAsync(string userId, string address)
-        {
+            var user = await repository.GetByIdAsync<ApplicationUser>(userId);
+            if (user == null)
+            {
+                throw new ArgumentException($"User with ID {userId} does not exist.");
+            }
+
             var orderToAdd = new Order
             {
                 UserId = userId,
+                User = user,
                 Address = address,
-                OrderDate = DateTime.Now
+                OrderDate = DateTime.Now,
+                OrderProducts = products.Select(p => new OrderProduct
+                {
+                    ProductId = p.ProductId,
+                    Quantity = p.Amount,
+                    Price = p.Price * p.Amount
+                }).ToList()
             };
 
             await repository.AddAsync(orderToAdd);

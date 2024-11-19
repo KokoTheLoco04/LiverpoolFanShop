@@ -1,4 +1,5 @@
 ﻿using LiverpoolFanShop.Core.Models.Product;
+using LiverpoolFanShop.Core.Models.ShoppingCart;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,8 @@ namespace LiverpoolFanShop.Core.Contracts
         Task<List<ProductInShoppingCartViewModel>> GetCartItemsAsync(string userId); 
         Task ClearCartAsync(string userId); 
         Task<decimal> GetCartTotalAsync(string userId);
+        Task<ShoppingCartViewModel> GetCartByUserIdAsync(string id);
+        Task<bool> DoesUserHasCartAsync(string id);
+        Task CreateCartForUserByIdAsync(string id);
     }
 }
