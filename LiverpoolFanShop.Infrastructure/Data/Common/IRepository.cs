@@ -16,8 +16,8 @@ namespace LiverpoolFanShop.Infrastructure.Data.Common
 
         Task<int> SaveChangesAsync();
 
-        Task<T?> GetByIdAsync<T>(object id) where T : class;
+        Task<T?> GetByIdAsync<T>(params object[] keyValues) where T : class;
 
-        Task DeleteAsync<T>(object id) where T : class;
+        Task DeleteAsync<T>(params object[] keyValues) where T : class;
     }
 }
