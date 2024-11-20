@@ -1,19 +1,48 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using LiverpoolFanShop.Infrastructure.Data.Models
+@using System.Security.Claims
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    string username = string.Empty;
+    bool isAdmin = false;
+
+    if (SignInManager.IsSignedIn(User))
+    {
+        username = User.FindFirstValue(LiverpoolFanShop.Infrastructure.Constants.CustomClaims.UserFullNameClaim) ?? string.Empty;
+        isAdmin = User.IsInRole("Admin");
+    }
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Shopping Cart</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #f8f9fa;
             font-family: Arial, sans-serif;
+            background: url('/images/layout/shoppingCartLogo.jpg') no-repeat center center fixed;
+            background-size: cover;
+            background-attachment: fixed; /* Ensures the background stays fixed while scrolling */
+            background-position: center; /* Centers the image */
+            margin: 0;
+            padding: 0;
         }
 
         h2.text-danger {
-            font-size: 2rem;
+            font-size: 2.5rem;
+            font-weight: bold;
             text-transform: uppercase;
+            background-color: white;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .cart-item-container {
@@ -48,18 +77,13 @@
             flex-direction: column;
         }
 
-        .cart-item .card-title {
+        .cart-item .card-title .cart-item .card-text{
             font-size: 1rem;
             font-weight: bold;
-            background-color: #f8d7da;
+            background-color: white;
             padding: 5px;
             border-radius: 5px;
             margin-bottom: 5px;
-        }
-
-        .cart-item .card-text {
-            font-size: 0.9rem;
-            color: #555;
         }
 
         .btn-custom {
@@ -116,10 +140,12 @@
 
             .action-buttons button {
                 width: 100%;
-                padding: 10px 20px; /* Adjusted width */
-                font-size: 0.9rem;
+                padding: 10px 20px;
                 border-radius: 5px;
                 cursor: pointer;
+                border: none;
+                font-size: 0.9rem;
+                font-weight: bold;
             }
 
             .action-buttons .btn-danger {
@@ -128,43 +154,102 @@
             }
 
             .action-buttons .btn-success {
-                background-color: #28a745;
+                background-color: #ffc107;
                 color: white;
             }
 
             .action-buttons button:hover {
                 opacity: 0.8;
+                color: black;
             }
 
         .quantity-update {
-            display: flex;
-            justify-content: space-between;
-            gap: 5px;
-            align-items: center;
+            display: flex; /* Align elements side by side */
+            align-items: center; /* Vertically align input and button */
+            gap: 5px; /* Small gap between the input and button */
+            justify-content: flex-start; /* Ensure alignment to the left */
         }
 
-            .quantity-update .input-group {
-                flex-grow: 1;
-                display: flex;
+            .quantity-update input {
+                width: 60px; /* Narrow input field */
+                height: 35px; /* Match button height */
+                font-size: 0.9rem; /* Smaller font size */
+                text-align: center; /* Center-align number inside input */
+                margin: 0; /* Remove any default margins */
+                padding: 0 5px; /* Minimal padding */
+                box-sizing: border-box; /* Ensure padding is included in width */
             }
-        .input-group{
-            display: flex;
-            flex-direction: row;
-        }
 
-        .input-group input {
-            width: 20px;
-            height: 38px; /* Adjusted to match button height */
-        }
-
-        .input-group button {
-            height: 38px; /* Ensure same height as input */
-        }
+            .quantity-update button {
+                height: 35px; /* Match input height */
+                font-size: 0.9rem; /* Consistent font size with input */
+                padding: 0 10px; /* Adjust button size */
+                margin: 0; /* Remove any extra margins */
+                box-sizing: border-box; /* Ensure proper sizing */
+            }
 
         .empty-cart {
             text-align: center;
             font-size: 1.25rem;
             color: #6c757d;
+        }
+
+        footer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-top: 1px solid #ddd;
+            margin-top: 30px;
+        }
+
+            footer .contact-info {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                width: 100%;
+                padding-bottom: 10px;
+            }
+
+                footer .contact-info div {
+                    flex: 1;
+                    padding: 5px;
+                }
+
+                    footer .contact-info div span {
+                        display: block;
+                        margin-bottom: 5px;
+                    }
+
+                    footer .contact-info div a {
+                        color: #007bff;
+                        text-decoration: none;
+                    }
+
+                        footer .contact-info div a:hover {
+                            text-decoration: underline;
+                        }
+
+            footer p.copyright {
+                margin: 0;
+            }
+
+        .navbar {
+            background-color: rgba(200, 16, 46, 0.9);
+        }
+
+        .navbar-brand, .nav-link {
+            color: #fff !important;
+        }
+
+        .navbar-nav .nav-item a .fa-cart-shopping {
+            font-size: 1.2rem;
+            margin-right: 5px; /* Adjust spacing */
+        }
+
+        .navbar-text {
+            margin-left: 10px; /* Add space between the cart icon and username */
         }
     </style>
 </head>
@@ -175,6 +260,58 @@
             @TempData["Success"]
         </div>
     }
+
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <a class="navbar-brand" href="/">Liverpool FC Fan Shop</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <li class="nav-item d-flex align-items-center">
+                        <!-- Cart Icon -->
+                        <a class="nav-link text-white" href="/Carts/Cart">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item d-flex align-items-center">
+                        <span class="navbar-text">Hello, @username!</span>
+                    </li>
+                    <li class="nav-item">
+                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" method="post">
+                            <button type="submit" class="nav-link btn btn-link" style="color: white;">Logout</button>
+                        </form>
+                    </li>
+                    @if (isAdmin)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Admin/AddProduct">Add Product</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Admin/EditProduct">Edit Product</a>
+                        </li>
+                    }
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </nav>
+
 
     <h2 class="text-center text-danger mb-4">Your Shopping Cart</h2>
 
@@ -193,7 +330,7 @@
                     <img src="@item.ImageUrl" alt="@item.ProductName" />
                     <div class="card-body">
                         <h5 class="card-title">@item.ProductName</h5>
-                        <p class="card-text">@item.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-GB"))</p>
+                        <p class="card-text">Price: @item.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-GB"))</p>
                         <p class="card-text">Quantity: @item.Amount</p>
                         <form method="post" asp-action="RemoveFromCart" asp-route-productId="@item.ProductId">
                             @Html.AntiForgeryToken()
@@ -201,10 +338,8 @@
                         </form>
                         <form method="post" asp-action="UpdateQuantity" asp-route-productId="@item.ProductId" class="quantity-update mt-2">
                             @Html.AntiForgeryToken()
-                            <div class="input-group">
-                                <input type="number" name="quantity" value="@item.Amount" min="1" class="form-control" />
-                                <button type="submit" class="btn btn-custom btn-custom-warning">Update Quantity</button>
-                            </div>
+                            <input type="number" name="quantity" value="@item.Amount" min="1" class="form-control" />
+                            <button type="submit" class="btn btn-custom btn-custom-warning">Update Quantity</button>
                         </form>
                     </div>
                 </div>

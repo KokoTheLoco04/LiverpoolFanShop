@@ -36,6 +36,7 @@
 <head>
     <title>@Model.Name - Details</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
 
         img {
@@ -95,6 +96,15 @@
             color: #fff !important;
         }
 
+        .navbar-nav .nav-item a .fa-cart-shopping {
+            font-size: 1.2rem;
+            margin-right: 5px; /* Adjust spacing */
+        }
+
+        .navbar-text {
+            margin-left: 10px; /* Add space between the cart icon and username */
+        }
+
         .details-text {
             color: rgba(0, 0, 0, 0.85);
             font-weight: bold;
@@ -146,7 +156,13 @@
             <ul class="navbar-nav ml-auto">
                 @if (SignInManager.IsSignedIn(User))
                 {
-                    <li class="nav-item">
+                    <li class="nav-item d-flex align-items-center">
+                        <!-- Cart Icon -->
+                        <a class="nav-link text-white" href="/Carts/Cart">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item d-flex align-items-center">
                         <span class="navbar-text">Hello, @username!</span>
                     </li>
                     <li class="nav-item">
