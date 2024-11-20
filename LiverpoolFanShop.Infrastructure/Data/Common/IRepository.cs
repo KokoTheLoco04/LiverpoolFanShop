@@ -19,5 +19,6 @@ namespace LiverpoolFanShop.Infrastructure.Data.Common
         Task<T?> GetByIdAsync<T>(params object[] keyValues) where T : class;
 
         Task DeleteAsync<T>(params object[] keyValues) where T : class;
+        Task DeleteRangeAsync<T>(IEnumerable<T> entities) where T : class;
     }
 }
