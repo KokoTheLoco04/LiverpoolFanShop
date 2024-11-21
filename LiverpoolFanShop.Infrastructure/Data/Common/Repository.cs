@@ -62,5 +62,11 @@ namespace LiverpoolFanShop.Infrastructure.Data.Common
             DbSet<T>().RemoveRange(entities);
             await context.SaveChangesAsync();
         }
+
+        public Task UpdateAsync<T>(T entity) where T : class
+        {
+            DbSet<T>().Update(entity);
+            return Task.CompletedTask;
+        }
     }
 }
