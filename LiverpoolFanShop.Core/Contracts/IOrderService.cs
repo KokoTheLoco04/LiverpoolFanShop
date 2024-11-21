@@ -11,7 +11,7 @@ namespace LiverpoolFanShop.Core.Contracts
     public interface IOrderService
     {
         Task<int> CreateOrderAsync(string userId, string address, List<ProductInShoppingCartViewModel> products);
-
         Task<List<OrderViewModel>> GetOrdersForUserByIdAsync(string userId);
+        Task<OrderViewModel?> GetOrderByIdAsync(int orderId);
     }
 }

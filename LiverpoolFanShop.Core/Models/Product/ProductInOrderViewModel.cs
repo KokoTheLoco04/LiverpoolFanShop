@@ -6,8 +6,8 @@ namespace LiverpoolFanShop.Core.Models.Product
     using LiverpoolFanShop.Infrastructure.Data.Models;
     public class ProductInOrderViewModel
     {
-        [Required]
-        public int Id { get; set; }
+        
+        //public int Id { get; set; }
 
         [Required]
         public int Amount { get; set; }
@@ -18,5 +18,9 @@ namespace LiverpoolFanShop.Core.Models.Product
         [Required]
         [ForeignKey(nameof(ProductId))]
         public Product Product { get; set; } = null!;
+
+        [Required]
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal Price { get; set; }
     }
 }

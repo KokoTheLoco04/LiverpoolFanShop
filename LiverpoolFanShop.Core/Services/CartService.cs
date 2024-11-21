@@ -58,14 +58,7 @@ namespace LiverpoolFanShop.Core.Services
 
             if (shoppingCart != null && shoppingCart.ShoppingCartProducts.Any())
             {
-                var cartProducts = shoppingCart.ShoppingCartProducts.ToList();
-
-                foreach (var cartProduct in cartProducts)
-                {
-                    await repository.DeleteAsync<ShoppingCartProduct>(cartProduct.ProductId, cartProduct.ShoppingCartId);
-                }
-
-                await repository.SaveChangesAsync();
+                await repository.DeleteRangeAsync(shoppingCart.ShoppingCartProducts);
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LiverpoolFanShop.Core.Models.Product;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,5 +17,9 @@ namespace LiverpoolFanShop.Core.Models.Order
 
         [Required]
         public string ShoppingCartId { get; set; } = string.Empty;
+
+        public List<ProductInShoppingCartViewModel> ShoppingCartProducts { get; set; } = new List<ProductInShoppingCartViewModel>();
+
+        public decimal TotalAmount => ShoppingCartProducts.Sum(p => p.Price * p.Amount);
     }
 }

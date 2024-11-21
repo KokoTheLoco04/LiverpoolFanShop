@@ -20,7 +20,7 @@ namespace LiverpoolFanShop.Core.Services
         {
             repository = _repository;
         }
-        
+
         public async Task<int> CreateOrderAsync(string userId, string address, List<ProductInShoppingCartViewModel> products)
         {
             if (products == null || !products.Any())
@@ -28,30 +28,26 @@ namespace LiverpoolFanShop.Core.Services
                 throw new ArgumentException("Order must contain at least one product.");
             }
 
-            var user = await repository.GetByIdAsync<ApplicationUser>(userId);
-            if (user == null)
-            {
-                throw new ArgumentException($"User with ID {userId} does not exist.");
-            }
+            decimal totalAmount = products.Sum(p => p.TotalPrice);
 
-            var orderToAdd = new Order
+            var order = new Order
             {
                 UserId = userId,
-                User = user,
                 Address = address,
-                OrderDate = DateTime.Now,
+                OrderDate = DateTime.UtcNow,
+                TotalAmount = totalAmount, 
                 OrderProducts = products.Select(p => new OrderProduct
                 {
                     ProductId = p.ProductId,
                     Quantity = p.Amount,
-                    Price = p.Price * p.Amount
+                    Price = p.Price * p.Amount 
                 }).ToList()
             };
 
-            await repository.AddAsync(orderToAdd);
+            await repository.AddAsync(order);
             await repository.SaveChangesAsync();
 
-            return orderToAdd.Id;
+            return order.Id;
         }
 
         public async Task<List<OrderViewModel>> GetOrdersForUserByIdAsync(string userId)
@@ -70,6 +66,38 @@ namespace LiverpoolFanShop.Core.Services
                     OrderProducts = o.OrderProducts.ToList()
                 })
                 .ToListAsync();
+        }
+
+        public async Task<OrderViewModel?> GetOrderByIdAsync(int orderId)
+        {
+            // Fetch the order including related entities
+            var order = await repository.All<Order>()
+                .Where(o => o.Id == orderId)
+                .Include(o => o.OrderProducts) // Include OrderProducts
+                 .ThenInclude(op => op.Product) // Include Product details
+                .Include(o => o.User) // Include ApplicationUser
+                .FirstOrDefaultAsync();
+
+            if (order == null)
+            {
+                return null;
+            }
+
+            return new OrderViewModel
+            {
+                Id = order.Id,
+                Address = order.Address,
+                CreatedOn = order.OrderDate,
+                ApplicationUserId = order.UserId,
+                ApplicationUser = order.User,
+                OrderProducts = order.OrderProducts.Select(op => new OrderProduct
+                {
+                    ProductId = op.ProductId,
+                    Product = op.Product,
+                    Quantity = op.Quantity,
+                    Price = op.Price
+                }).ToList()
+            };
         }
     }
 }
