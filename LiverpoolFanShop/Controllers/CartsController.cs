@@ -1,4 +1,5 @@
 ﻿using LiverpoolFanShop.Core.Contracts;
+using LiverpoolFanShop.Core.Models.Order;
 using LiverpoolFanShop.Core.Models.Product;
 using LiverpoolFanShop.Core.Models.ShoppingCart;
 using LiverpoolFanShop.Core.Services;
@@ -15,12 +16,14 @@ namespace LiverpoolFanShop.Controllers
     {
         private readonly ICartService cartService;
         private readonly IProductService productService;
+        private readonly IOrderService orderService;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public CartsController(ICartService _cartService, IProductService _productService, UserManager<ApplicationUser> _userManager)
+        public CartsController(ICartService _cartService, IProductService _productService, IOrderService _orderService, UserManager<ApplicationUser> _userManager)
         {
             cartService = _cartService;
             productService = _productService;
+            orderService = _orderService;
             userManager = _userManager;
         }
 
@@ -65,7 +68,8 @@ namespace LiverpoolFanShop.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("Details", new { id = model.ProductId });
+                TempData["Error"] = "Invalid product details. Please try again.";
+                return RedirectToAction("Details", "Products", new { id = model.ProductId });
             }
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -75,18 +79,22 @@ namespace LiverpoolFanShop.Controllers
                 return RedirectToPage("/Account/Login", new { area = "Identity" });
             }
 
-            model.ApplicationUserId = userId;
-
-            try
+            var product = await productService.GetProductByIdAsync(model.ProductId);
+            if (product == null)
             {
-                await cartService.AddProductToCartAsync(model.ProductId, model.ApplicationUserId, model.Amount);
-                TempData["Success"] = "Product successfully added to the cart!";
-            }
-            catch (Exception ex)
-            {
-                TempData["Error"] = $"Failed to add product to cart: {ex.Message}";
+                TempData["Error"] = "Product not found.";
+                return RedirectToAction("Index", "Home");
             }
 
+            if (model.Amount > product.AmountInStock)
+            {
+                TempData["Error"] = $"Only {product.AmountInStock} items are available in stock.";
+                return RedirectToAction("Details", "Products", new { id = model.ProductId });
+            }
+
+            await cartService.AddProductToCartAsync(model.ProductId, userId, model.Amount);
+
+            TempData["Success"] = "Product successfully added to your cart!";
             return RedirectToAction("Details", "Products", new { id = model.ProductId });
         }
 
@@ -182,5 +190,37 @@ namespace LiverpoolFanShop.Controllers
 
             return RedirectToAction("Cart");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Checkout()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
+            }
+
+            var cartItems = await cartService.GetCartItemsAsync(userId);
+
+            if (!cartItems.Any())
+            {
+                TempData["Error"] = "Your cart is empty.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var totalAmount = cartItems.Sum(item => item.Price * item.Amount);
+
+            var checkoutViewModel = new MakeOrderInputViewModel
+            {
+                ShoppingCartId = userId,
+                Address = string.Empty
+            };
+
+            ViewBag.CartTotal = totalAmount;
+
+            return View(checkoutViewModel);
+        }
     }
 }
+

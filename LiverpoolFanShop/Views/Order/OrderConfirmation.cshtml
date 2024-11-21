@@ -1,37 +1,38 @@
 ﻿@model LiverpoolFanShop.Core.Models.Order.OrderViewModel
 
-<div class="container mt-4">
-    <h1>Order Confirmation</h1>
-    <p>Thank you for your purchase, @Model.ApplicationUser.FirstName @Model.ApplicationUser.LastName!</p>
-    <p>Your order has been placed successfully and will be shipped to:</p>
-    <p><strong>@Model.Address</strong></p>
+@{
+    TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("E. Europe Standard Time");
 
-    <h4>Order Summary:</h4>
-    <table class="table table-striped">
-        <thead>
+    DateTime localDate = TimeZoneInfo.ConvertTimeFromUtc(Model.CreatedOn, timeZone);
+}
+
+<h2>Order Confirmation</h2>
+
+<p>Thank you for your order!</p>
+
+<p><strong>Order ID:</strong> @Model.Id</p>
+<p><strong>Address:</strong> @Model.Address</p>
+<p><strong>Order Date:</strong> @localDate.ToString("g")</p>
+<p><strong>Total Amount:</strong> @Model.TotalAmount.ToString("C")</p>
+
+<h3>Products:</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model.OrderProducts)
+        {
             <tr>
-                <th>Product</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Total</th>
+                <td>@product.Product?.Name</td>
+                <td>@product.Quantity</td>
+                <td>@product.Price.ToString("C")</td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.OrderProducts)
-            {
-                <tr>
-                    <td>@item.Product.Name</td>
-                    <td>@item.Quantity</td>
-                    <td>£@item.Product.Price.ToString("F2")</td>
-                    <td>£@(item.Quantity * item.Product.Price).ToString("F2")</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+        }
+    </tbody>
+</table>
 
-    <div class="text-right">
-        <h4>Total Amount: £@Model.TotalAmount.ToString("F2")</h4>
-    </div>
-
-    <a href="/" class="btn btn-primary">Continue Shopping</a>
-</div>
