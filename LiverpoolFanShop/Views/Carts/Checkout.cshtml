@@ -1,51 +1,212 @@
 ﻿@model LiverpoolFanShop.Core.Models.Order.MakeOrderInputViewModel
 @using Microsoft.AspNetCore.Identity
 @using LiverpoolFanShop.Infrastructure.Data.Models
-@using System.Security.Claims
-@inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+@using System.Security.Claims
+
+@{
+    string username = string.Empty;
+    bool isAdmin = false;
+
+    if (SignInManager.IsSignedIn(User))
+    {
+        username = User.FindFirstValue(LiverpoolFanShop.Infrastructure.Constants.CustomClaims.UserFullNameClaim) ?? string.Empty;
+        isAdmin = User.IsInRole("Admin");
+    }
+}
 
 @{
     ViewData["Title"] = "Checkout";
 
-    // Retrieve current user data using UserManager
     var currentUser = UserManager.GetUserAsync(User).Result;
-    var firstName = currentUser?.FirstName ?? string.Empty; // Default to empty if null
+    var firstName = currentUser?.FirstName ?? string.Empty; 
     var lastName = currentUser?.LastName ?? string.Empty;
     var email = currentUser?.Email ?? string.Empty;
 }
 
-<h2 class="text-center text-danger">Checkout</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Liverpool FC</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('/images/layout/checkoutPage.jpg');
+            background-size: cover; 
+            background-repeat: no-repeat; 
+            background-position: center; 
+            background-attachment: fixed;
+        }
 
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger text-center">
-        @TempData["Error"]
-    </div>
-}
+        .checkout-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
 
-<form method="post" asp-controller="Order" asp-action="FinishOrder">
-    <div class="form-group">
-        <label for="FirstName">First Name</label>
-        <input type="text" id="FirstName" class="form-control" name="FirstName" value="@firstName" required />
-    </div>
-    <div class="form-group">
-        <label for="LastName">Last Name</label>
-        <input type="text" id="LastName" class="form-control" name="LastName" value="@lastName" required />
-    </div>
-    <div class="form-group">
-        <label for="Email">Email</label>
-        <input type="email" id="Email" class="form-control" name="Email" value="@email" readonly />
-    </div>
-    <div class="form-group">
-        <label for="Address">Shipping Address</label>
-        <textarea id="Address" class="form-control" name="Address" required>@Model.Address</textarea>
-    </div>
-    <input type="hidden" name="ShoppingCartId" value="@Model.ShoppingCartId" />
-    <div class="text-center mt-4">
-        <h4>Total Amount: @ViewBag.CartTotal.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-GB"))</h4>
-        <button type="submit" class="btn btn-success">Complete Order</button>
-    </div>
-</form>
+        h2 {
+            color: #c8102e;
+            font-weight: bold;
+        }
 
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        label {
+            color: #333;
+            font-weight: bold;
+        }
+
+        .btn-success {
+            background-color: #c8102e;
+            border: none;
+            color: white;
+            font-weight: bold;
+        }
+
+        .btn-warning {
+            font-weight: bold;
+        }
+
+        .delivery-note {
+            color: #333;
+            font-style: italic;
+        }
+
+        footer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-top: 1px solid #ddd;
+            margin-top: 30px;
+        }
+
+            footer .contact-info {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                width: 100%;
+                padding-bottom: 10px;
+            }
+
+                footer .contact-info div {
+                    flex: 1;
+                    padding: 5px;
+                }
+
+                    footer .contact-info div span {
+                        display: block;
+                        margin-bottom: 5px;
+                    }
+
+                    footer .contact-info div a {
+                        color: #007bff;
+                        text-decoration: none;
+                    }
+
+                        footer .contact-info div a:hover {
+                            text-decoration: underline;
+                        }
+
+            footer p.copyright {
+                margin: 0;
+            }
+
+        .navbar {
+            background-color: rgba(200, 16, 46, 0.9);
+        }
+
+        .navbar-brand, .nav-link {
+            color: #fff !important;
+        }
+
+        .navbar-nav .nav-item a .fa-cart-shopping {
+            font-size: 1.2rem;
+            margin-right: 5px; 
+        }
+
+        .navbar-text {
+            margin-left: 10px; 
+        }
+    </style>
+</head>
+<body>
+    <div class="checkout-container">
+        <h2 class="text-center">Liverpool FC Checkout</h2>
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger text-center">
+                @TempData["Error"]
+            </div>
+        }
+
+        <form method="post" asp-controller="Order" asp-action="FinishOrder">
+            <div class="form-group">
+                <label for="FirstName">First Name</label>
+                <input type="text"
+                       id="FirstName"
+                       class="form-control"
+                       name="FirstName"
+                       value="@firstName"
+                       required />
+            </div>
+            <div class="form-group">
+                <label for="LastName">Last Name</label>
+                <input type="text"
+                       id="LastName"
+                       class="form-control"
+                       name="LastName"
+                       value="@lastName"
+                       required />
+            </div>
+            <div class="form-group">
+                <label for="Email">Email</label>
+                <input type="email"
+                       id="Email"
+                       class="form-control"
+                       name="Email"
+                       value="@email"
+                       readonly />
+            </div>
+            <div class="form-group">
+                <label for="Address">Shipping Address</label>
+                <textarea id="Address"
+                          class="form-control"
+                          name="Address"
+                          required>@Model.Address</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="PaymentMethod">Payment Method</label>
+                <select id="PaymentMethod" class="form-control" name="PaymentMethod" disabled>
+                    <option selected>Cash on Delivery</option>
+                </select>
+            </div>
+
+            <input type="hidden" name="ShoppingCartId" value="@Model.ShoppingCartId" />
+
+            <div class="text-center mt-4">
+                <h4>
+                    Total Amount:
+                    @ViewBag.CartTotal.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-GB"))
+                </h4>
+                <p class="delivery-note">Expected delivery time: <strong>2-5 business days</strong>.</p>
+                <a href="/Carts/Cart" class="btn btn-warning">Back to Cart</a>
+                <button type="submit" class="btn btn-success">Complete Order</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</body>
+</html>

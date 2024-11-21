@@ -262,58 +262,6 @@
         </div>
     }
 
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <a class="navbar-brand" href="/">Liverpool FC Fan Shop</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Home</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav ml-auto">
-                @if (SignInManager.IsSignedIn(User))
-                {
-                    <li class="nav-item d-flex align-items-center">
-                        <!-- Cart Icon -->
-                        <a class="nav-link text-white" href="/Carts/Cart">
-                            <i class="fa-solid fa-cart-shopping"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item d-flex align-items-center">
-                        <span class="navbar-text">Hello, @username!</span>
-                    </li>
-                    <li class="nav-item">
-                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" method="post">
-                            <button type="submit" class="nav-link btn btn-link" style="color: white;">Logout</button>
-                        </form>
-                    </li>
-                    @if (isAdmin)
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Admin/AddProduct">Add Product</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Admin/EditProduct">Edit Product</a>
-                        </li>
-                    }
-                }
-                else
-                {
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Register</a>
-                    </li>
-                }
-            </ul>
-        </div>
-    </nav>
-
-
     <h2 class="text-center text-danger mb-4">Your Shopping Cart</h2>
 
     @if (Model.ShoppingCartProducts == null || Model.ShoppingCartProducts.Count == 0)
