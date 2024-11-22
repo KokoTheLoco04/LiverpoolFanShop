@@ -63,9 +63,57 @@ namespace LiverpoolFanShop.Areas.Admin.Controllers
             return RedirectToAction("Dashboard", "Home", new { area = "Admin" });
         }
 
-        public IActionResult Edit() 
+        [HttpGet]
+        public async Task<IActionResult> EditList()
         {
-            return View();
+            var products = await productService.GetAllProductsAsync();
+            return View(products);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var product = await productService.GetProductByIdAsync(id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            var model = new ProductFormModel
+            {
+                Name = product.Name,
+                Description = product.Description,
+                ImageUrl = product.ImageUrl,
+                AmountInStock = product.AmountInStock,
+                Price = product.Price,
+                CategoryId = product.Category.Id,
+                Categories = await categoryService.AllCategoriesAsync()
+            };
+
+            return View("Add", model);
+        }
+
+            [HttpPost]
+            public async Task<IActionResult> Edit(int id, ProductFormModel model)
+            {
+                if (!ModelState.IsValid)
+                {
+                    // Reload categories for the dropdown if validation fails
+                    model.Categories = await categoryService.AllCategoriesAsync();
+                    return View(model);
+                }
+
+                var isUpdated = await productService.UpdateProductAsync(id, model);
+
+                if (!isUpdated)
+                {
+                    TempData["Error"] = "Product not found or could not be updated.";
+                    return RedirectToAction(nameof(EditList)); // Redirect back to the product list
+                }
+
+                TempData["Success"] = "Product updated successfully!";
+                return RedirectToAction(nameof(EditList)); // Redirect back to the product list
+            }
     }
 }
