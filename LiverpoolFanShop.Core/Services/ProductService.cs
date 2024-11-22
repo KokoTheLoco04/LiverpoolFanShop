@@ -43,37 +43,42 @@ namespace LiverpoolFanShop.Core.Services
 
         public async Task<AllProductsFilteredAndPagedServiceModel> GetAllProductsAsync(AllProductsQueryModel queryModel)
         {
-            var productQuery = repository.AllReadOnly<Product>(); 
+            var productQuery = repository.AllReadOnly<Product>();
 
-            if (!string.IsNullOrWhiteSpace(queryModel.SearchTerm)) 
-            { 
-                productQuery = productQuery.Where(p => p.Name.Contains(queryModel.SearchTerm) 
-                                                    || p.Description.Contains(queryModel.SearchTerm)); 
+            // Apply search term filter if provided
+            if (!string.IsNullOrWhiteSpace(queryModel.SearchTerm))
+            {
+                productQuery = productQuery.Where(p => p.Name.Contains(queryModel.SearchTerm)
+                                                    || p.Description.Contains(queryModel.SearchTerm));
             }
-            
-            if (!string.IsNullOrWhiteSpace(queryModel.Category)) 
-            { 
-                productQuery = productQuery.Where(p => p.Category.Name == queryModel.Category); 
+
+            // Apply category filter if a CategoryId is provided
+            if (queryModel.CategoryId.HasValue)
+            {
+                productQuery = productQuery.Where(p => p.CategoryId == queryModel.CategoryId);
             }
-            
-            var totalProducts = await productQuery.CountAsync(); 
+
+            var totalProducts = await productQuery.CountAsync();
+
+            // Apply pagination
             var products = await productQuery
                 .Skip((queryModel.CurrentPage - 1) * queryModel.ProductsPerPage)
                 .Take(queryModel.ProductsPerPage)
-                .ToListAsync(); 
-            
-            return new AllProductsFilteredAndPagedServiceModel 
-            { 
-                TotalProducts = totalProducts, 
-                Products = products.Select(p => new ProductViewModel 
-                    {  
-                        Id = p.Id, 
-                        Name = p.Name, 
-                        Price = p.Price, 
-                        ImageUrl = p.ImageUrl 
-                })
-                .ToList() };
+                .ToListAsync();
+
+            return new AllProductsFilteredAndPagedServiceModel
+            {
+                TotalProducts = totalProducts,
+                Products = products.Select(p => new ProductViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Price = p.Price,
+                    ImageUrl = p.ImageUrl
+                }).ToList()
+            };
         }
+
 
         public async Task<ProductDetailsViewModel?> GetProductByIdAsync(int id)
         {
@@ -119,5 +124,47 @@ namespace LiverpoolFanShop.Core.Services
             return await repository.AllReadOnly<Product>()
                 .AnyAsync(p => p.Name.ToLower() == name.ToLower());
         }
+
+        public async Task<IEnumerable<ProductDetailsViewModel>> GetAllProductsAsync()
+        {
+            return await repository.AllReadOnly<Product>()
+                .Select(p => new ProductDetailsViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    ImageUrl = p.ImageUrl,
+                    Price = p.Price,
+                    AmountInStock = p.AmountInStock,
+                    Category = new ProductCategoryModel()
+                    {
+                        Id = p.CategoryId,
+                        Name = p.Category.Name
+                    }
+                })
+                .ToListAsync();
+        }
+
+        public async Task<bool> UpdateProductAsync(int productId, ProductFormModel model)
+        {
+            var product = await repository.GetByIdAsync<Product>(productId);
+
+            if (product == null)
+            {
+                return false;
+            }
+
+            product.Name = model.Name;
+            product.Description = model.Description;
+            product.ImageUrl = model.ImageUrl;
+            product.Price = model.Price;
+            product.AmountInStock = model.AmountInStock;
+            product.CategoryId = model.CategoryId;
+
+            await repository.SaveChangesAsync();
+
+            return true;
+        }
+
     }
 }

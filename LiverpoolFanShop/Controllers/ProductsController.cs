@@ -17,10 +17,21 @@ namespace LiverpoolFanShop.Controllers
             productService = _productService;
             cartService = _cartService;
         }
-        public async Task<IActionResult> ProductsByCategory(int id)
+        public async Task<IActionResult> ProductsByCategory(int id, int currentPage = 1, int productsPerPage = 3)
         {
-            var products = await productService.GetProductsByCategoryAsync(id);
-            return View(products);
+            var queryModel = new AllProductsQueryModel
+            {
+                CategoryId = id,
+                CurrentPage = currentPage,
+                ProductsPerPage = productsPerPage
+            };
+
+            var result = await productService.GetAllProductsAsync(queryModel);
+
+            queryModel.TotalProductsCount = result.TotalProducts;
+            queryModel.Products = result.Products;
+
+            return View(queryModel);
         }
 
         public async Task<IActionResult> Details(int id)

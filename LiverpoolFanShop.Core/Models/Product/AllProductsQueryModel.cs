@@ -11,21 +11,20 @@ namespace LiverpoolFanShop.Core.Models.Product
 {
     public class AllProductsQueryModel
     {
-        public int ProductsPerPage = 8;
+        public string? SearchTerm { get; set; }
 
-        public string Category { get; init; } = null!;
+        public int? CategoryId { get; set; }
 
-        [Display(Name = "Search by text")]
-        public string SearchTerm { get; init; } = null!;
+        public string? Category { get; set; }
 
-        public ProductSorting Sorting { get; init; }
+        public int CurrentPage { get; set; } = 1;
 
-        public int CurrentPage { get; init; } = 1;
+        public int ProductsPerPage { get; set; } = 3;
 
         public int TotalProductsCount { get; set; }
 
-        public IEnumerable<ProductCategoryModel> Categories { get; set; } = null!;
-
+        public ProductSorting Sorting { get; init; }
         public IEnumerable<ProductViewModel> Products { get; set; } = new List<ProductViewModel>();
+
     }
 }
