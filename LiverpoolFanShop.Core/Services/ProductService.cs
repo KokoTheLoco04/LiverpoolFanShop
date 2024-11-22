@@ -113,5 +113,11 @@ namespace LiverpoolFanShop.Core.Services
             
             return products;
         }
+
+        public async Task<bool> DoesProductExistByNameAsync(string name)
+        {
+            return await repository.AllReadOnly<Product>()
+                .AnyAsync(p => p.Name.ToLower() == name.ToLower());
+        }
     }
 }

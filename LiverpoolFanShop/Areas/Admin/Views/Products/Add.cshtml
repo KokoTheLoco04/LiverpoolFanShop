@@ -1,0 +1,207 @@
+﻿@model LiverpoolFanShop.Core.Models.Product.ProductFormModel
+
+@{
+    ViewData["Title"] = "Add Product";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+                /* Global Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fa; /* Light grey background */
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Container Styling */
+        .container {
+            max-width: 900px;
+            margin: 0 auto; /* Center the container */
+            background-color: #ffffff; /* White background for the form container */
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 100px;/* Subtle shadow */
+        }
+
+        /* Header Styling */
+        h2 {
+            color: #333; /* Dark text color */
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Form Field Styling */
+        .form-label {
+            font-weight: 600;
+            color: #333; /* Label text color */
+            font-size: 1rem;
+        }
+
+        /* Input Fields */
+        input.form-control, textarea.form-control, select.form-control {
+            background-color: #f8f9fa; /* Light background color */
+            border: 1px solid #ddd; /* Light grey border */
+            padding: 12px;
+            font-size: 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        input.form-control:focus, textarea.form-control:focus, select.form-control:focus {
+            border-color: #007bff; /* Blue border on focus */
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            outline: none; /* Remove default outline */
+        }
+
+        /* Error Validation Styling */
+        .text-danger {
+            color: #dc3545; /* Red color for error messages */
+            font-size: 0.9rem;
+        }
+
+        /* Form Row Spacing */
+        .row {
+            margin-bottom: 20px;
+        }
+
+        /* Submit Button */
+        button[type="submit"] {
+            background-color: #007bff; /* Blue background */
+            color: white;
+            font-size: 1.1rem;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+            cursor: pointer;
+        }
+
+        /* Select Box Styling */
+        select.form-control {
+            background-color: #ffffff;
+            border-color: #ddd;
+            height: 50px;
+            padding: 10px;
+            font-size: 1rem;
+        }
+
+        /* Custom Styling for Price Input (Currency) */
+        input[type="number"] {
+            -moz-appearance: textfield;
+            appearance: textfield;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+        }
+
+        input[type="number"]:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        /* Centering the Submit Button */
+        .text-center {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Styling for Category Dropdown */
+        select.form-control option {
+            padding: 10px;
+        }
+
+        footer {
+            background-color: white; /* Dark footer background */
+            color: white; /* Padding around the footer */
+            text-align: left;
+            font-size: 0.9rem; /* Smaller text size for footer */
+        }
+
+            footer .container {
+                margin-top: 40px; /* Add space between content and footer */
+            }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Add New Product</h2>
+
+        <form method="post" enctype="multipart/form-data">
+            <div class="row">
+                <!-- Product Name -->
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Name" class="form-label">Product Name</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <!-- Product Description -->
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Description" class="form-label">Description</label>
+                    <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Product Image URL -->
+                <div class="col-md-6 mb-3">
+                    <label asp-for="ImageUrl" class="form-label">Image URL</label>
+                    <input asp-for="ImageUrl" class="form-control" />
+                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                </div>
+
+                <!-- Amount in Stock -->
+                <div class="col-md-6 mb-3">
+                    <label asp-for="AmountInStock" class="form-label">Amount in Stock</label>
+                    <input asp-for="AmountInStock" class="form-control" />
+                    <span asp-validation-for="AmountInStock" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Price -->
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Price" class="form-label">Price (£)</label>
+                    <input asp-for="Price" class="form-control" type="number" step="0.01" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+
+                <!-- Category -->
+                <div class="col-md-6 mb-3">
+                    <label asp-for="CategoryId" class="form-label">Category</label>
+                    <select asp-for="CategoryId" class="form-control">
+                        <option value="">Select Category</option>
+                        @foreach (var category in Model.Categories)
+                        {
+                            <option value="@category.Id">@category.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary">Add Product</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Validation Scripts -->
+    <partial name="_ValidationScriptsPartial" />
+</body>
+</html>
