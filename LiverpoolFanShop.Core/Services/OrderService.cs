@@ -52,30 +52,40 @@ namespace LiverpoolFanShop.Core.Services
 
         public async Task<List<OrderViewModel>> GetOrdersForUserByIdAsync(string userId)
         {
-            return await repository.AllReadOnly<Order>()
-                .Where(o => o.UserId == userId)
-                .Include(o => o.OrderProducts)
-                .ThenInclude(o => o.Product)
-                .Select(o => new OrderViewModel
+            var orders = await repository.All<Order>()
+            .Where(o => o.UserId == userId)
+            .Include(o => o.OrderProducts) // Load related products
+            .ThenInclude(op => op.Product) // Assuming there's a Product entity
+            .Select(o => new OrderViewModel
+            {
+                Id = o.Id,
+                Address = o.Address,
+                CreatedOn = o.OrderDate,
+                ApplicationUserId = o.UserId,
+                OrderProducts = o.OrderProducts.Select(op => new OrderProduct
                 {
-                    Id = o.Id,
-                    Address = o.Address,
-                    CreatedOn = o.OrderDate,
-                    ApplicationUserId = o.UserId,
-                    ApplicationUser = o.User,
-                    OrderProducts = o.OrderProducts.ToList()
-                })
-                .ToListAsync();
+                    ProductId = op.ProductId,
+                    Product = new Product
+                    {
+                        Name = op.Product.Name,
+                        Description = op.Product.Description
+                    },
+                    Price = op.Price,
+                    Quantity = op.Quantity
+                }).ToList()
+            })
+            .ToListAsync();
+
+            return orders;
         }
 
         public async Task<OrderViewModel?> GetOrderByIdAsync(int orderId)
         {
-            // Fetch the order including related entities
             var order = await repository.All<Order>()
                 .Where(o => o.Id == orderId)
-                .Include(o => o.OrderProducts) // Include OrderProducts
-                 .ThenInclude(op => op.Product) // Include Product details
-                .Include(o => o.User) // Include ApplicationUser
+                .Include(o => o.OrderProducts)
+                 .ThenInclude(op => op.Product)
+                .Include(o => o.User)
                 .FirstOrDefaultAsync();
 
             if (order == null)

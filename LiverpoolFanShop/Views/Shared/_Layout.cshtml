@@ -43,11 +43,16 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/">Home</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-link" style="color: white;" href="/Admin/Home/Dashboard">Dashboard</a>
+                    </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     @if (SignInManager.IsSignedIn(User))
-
                     {
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/Order/History">Order History</a>
+                        </li>
                         <li class="nav-item d-flex align-items-center">
 
                             <a class="nav-link text-white" href="/Carts/Cart">

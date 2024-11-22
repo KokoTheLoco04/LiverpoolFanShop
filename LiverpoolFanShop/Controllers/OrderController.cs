@@ -21,70 +21,6 @@ namespace LiverpoolFanShop.Controllers
             productService = _productService;
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> Checkout()
-        //{
-        //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-        //    if (string.IsNullOrEmpty(userId))
-        //    {
-        //        return RedirectToAction("Index", "Home");
-        //    }
-
-        //    var cart = await cartService.GetCartByUserIdAsync(userId);
-        //    if (cart == null || !cart.ShoppingCartProducts.Any())
-        //    {
-        //        TempData["Error"] = "Your cart is empty.";
-        //        return RedirectToAction("Cart", "Carts");
-        //    }
-
-        //    var viewModel = new MakeOrderInputViewModel
-        //    {
-        //        ShoppingCartId = cart.Id.ToString(),
-        //        ShoppingCartProducts = cart.ShoppingCartProducts.Select(item => new ProductInShoppingCartViewModel
-        //        {
-        //            ProductId = item.ProductId,
-        //            ProductName = item.ProductName,
-        //            Price = item.Price,
-        //            Amount = item.Amount,
-        //            ImageUrl = item.ImageUrl
-        //        }).ToList()
-        //    };
-
-        //    return View(viewModel);
-        //}
-
-        //[HttpPost]
-        //public async Task<IActionResult> Checkout(MakeOrderInputViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        // Create the order (save to database)
-        //        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);  // Get user info
-        //        var order = await orderService.CreateOrderAsync(model, userId);
-
-        //        if (order != null)
-        //        {
-        //            // Decrease stock for each product in the order.
-        //            foreach (var product in model.Products)
-        //            {
-        //                await productService.DecreaseProductAmountAsync(product.Id, product.Quantity);
-        //            }
-
-        //            // Redirect to the order confirmation page.
-        //            return RedirectToAction("OrderConfirmation", new { orderId = order.Id });
-        //        }
-
-        //        TempData["Error"] = "There was an error completing your order.";
-        //        return RedirectToAction("Checkout");
-        //    }
-
-        //    // If the form is not valid, return to checkout with validation errors.
-        //    TempData["Error"] = "Invalid order data.";
-        //    return RedirectToAction("Checkout");
-        //}
-
-
         [HttpPost]
         public async Task<IActionResult> FinishOrder(MakeOrderInputViewModel model)
         {
@@ -146,6 +82,21 @@ namespace LiverpoolFanShop.Controllers
             }
 
             return View(order);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> History()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var userOrders = await orderService.GetOrdersForUserByIdAsync(userId);
+
+            return View(userOrders);
         }
     }
 }

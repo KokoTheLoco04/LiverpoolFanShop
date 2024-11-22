@@ -1,0 +1,143 @@
+﻿@model List<LiverpoolFanShop.Core.Models.Order.OrderViewModel>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History - Liverpool FC Online Store</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .table {
+            font-family: 'Arial', sans-serif;
+        }
+
+        .table-bordered th, .table-bordered td {
+            border-color: #900C3F; /* Liverpool red */
+        }
+
+        .alert-link {
+            font-weight: bold;
+        }
+
+        h1.text-danger {
+            font-size: 2.5rem;
+            border-bottom: 3px solid #C8102E;
+            padding-bottom: 0.5rem;
+        }
+
+        footer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-top: 1px solid #ddd;
+            margin-top: 30px;
+            color: #333;
+        }
+
+            footer .contact-info {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                width: 100%;
+                padding-bottom: 10px;
+            }
+
+                footer .contact-info div {
+                    flex: 1;
+                    padding: 5px;
+                }
+
+                    footer .contact-info div span {
+                        display: block;
+                        margin-bottom: 5px;
+                    }
+
+                    footer .contact-info div a {
+                        color: #007bff;
+                        text-decoration: none;
+                    }
+
+                        footer .contact-info div a:hover {
+                            text-decoration: underline;
+                        }
+
+            footer p.copyright {
+                margin: 0;
+            }
+
+        .navbar {
+            background-color: rgba(200, 16, 46, 0.9);
+        }
+
+        .navbar-brand, .nav-link {
+            color: #fff !important;
+        }
+
+        .navbar-nav .nav-item a .fa-cart-shopping {
+            font-size: 1.2rem;
+            margin-right: 5px;
+        }
+
+        .navbar-text {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-danger">Your Order History</h1>
+        <p class="text-secondary">See all the orders you have placed with us.</p>
+
+        @if (Model.Any())
+        {
+            <table class="table table-bordered table-striped">
+                <thead class="bg-danger text-white">
+                    <tr>
+                        <th scope="col">Order Number</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Shipping Address</th>
+                        <th scope="col">Total Amount</th>
+                        <th scope="col">Products</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model)
+                    {
+                        <tr>
+                            <td>@order.Id</td>
+                            <td>@order.CreatedOn.ToString("dd MMM yyyy")</td>
+                            <td>@order.Address</td>
+                            <td>£@order.TotalAmount.ToString("F2")</td>
+                            <td>
+                                <ul class="list-unstyled">
+                                    @foreach (var product in order.OrderProducts)
+                                    {
+                                        <li>
+                                            <strong>@product.Product.Name</strong>
+                                            (Quantity: @product.Quantity, Price: £@product.Price.ToString("F2"))
+                                        </li>
+                                    }
+                                </ul>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-warning" role="alert">
+                You haven't placed any orders yet. Explore our
+                <a href="/" class="alert-link text-danger">products</a> and place your first order today!
+            </div>
+        }
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
