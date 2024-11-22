@@ -8,8 +8,10 @@ namespace LiverpoolFanShop.Core.Enumerations
 {
     public enum ProductSorting
     {
-        Newest = 0,
-        PriceAscending = 1,
-        PriceDescending = 2
+        Default = 0,
+        NameAscending = 1,
+        NameDescending = 2,
+        PriceAscending = 3,
+        PriceDescending = 4,
     }
 }

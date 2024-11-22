@@ -1,4 +1,5 @@
 ﻿using LiverpoolFanShop.Core.Contracts;
+using LiverpoolFanShop.Core.Enumerations;
 using LiverpoolFanShop.Core.Models.Category;
 using LiverpoolFanShop.Core.Models.Product;
 using LiverpoolFanShop.Core.Services;
@@ -10,20 +11,24 @@ namespace LiverpoolFanShop.Controllers
     public class ProductsController : BaseController
     {
         private readonly IProductService productService;
+        private readonly IProductCategoryService categoryService;
         private readonly ICartService cartService;
 
-        public ProductsController(IProductService _productService, ICartService _cartService)
+        public ProductsController(IProductService _productService, IProductCategoryService _categoryService, ICartService _cartService)
         {
             productService = _productService;
+            categoryService = _categoryService;
             cartService = _cartService;
         }
-        public async Task<IActionResult> ProductsByCategory(int id, int currentPage = 1, int productsPerPage = 3)
+        public async Task<IActionResult> ProductsByCategory(int id, int currentPage = 1, int productsPerPage = 3, string searchTerm = "", ProductSorting sorting = ProductSorting.Default)
         {
             var queryModel = new AllProductsQueryModel
             {
                 CategoryId = id,
                 CurrentPage = currentPage,
-                ProductsPerPage = productsPerPage
+                ProductsPerPage = productsPerPage,
+                SearchTerm = searchTerm,
+                Sorting = sorting
             };
 
             var result = await productService.GetAllProductsAsync(queryModel);
@@ -33,6 +38,9 @@ namespace LiverpoolFanShop.Controllers
 
             return View(queryModel);
         }
+
+
+
 
         public async Task<IActionResult> Details(int id)
         {

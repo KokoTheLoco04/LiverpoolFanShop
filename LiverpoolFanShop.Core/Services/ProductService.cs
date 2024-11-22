@@ -1,4 +1,5 @@
 ﻿using LiverpoolFanShop.Core.Contracts;
+using LiverpoolFanShop.Core.Enumerations;
 using LiverpoolFanShop.Core.Models.Category;
 using LiverpoolFanShop.Core.Models.Product;
 using LiverpoolFanShop.Core.Models.ServiceModels;
@@ -45,22 +46,34 @@ namespace LiverpoolFanShop.Core.Services
         {
             var productQuery = repository.AllReadOnly<Product>();
 
-            // Apply search term filter if provided
+            // Apply search term filter (if any)
             if (!string.IsNullOrWhiteSpace(queryModel.SearchTerm))
             {
                 productQuery = productQuery.Where(p => p.Name.Contains(queryModel.SearchTerm)
                                                     || p.Description.Contains(queryModel.SearchTerm));
             }
 
-            // Apply category filter if a CategoryId is provided
+            // Apply category filter (if any)
             if (queryModel.CategoryId.HasValue)
             {
                 productQuery = productQuery.Where(p => p.CategoryId == queryModel.CategoryId);
             }
 
+            // Apply sorting based on selected sorting option
+            productQuery = queryModel.Sorting switch
+            {
+                ProductSorting.PriceAscending => productQuery.OrderBy(p => p.Price), // Price Low to High
+                ProductSorting.PriceDescending => productQuery.OrderByDescending(p => p.Price), // Price High to Low
+                ProductSorting.NameAscending => productQuery.OrderBy(p => p.Name), // Name A-Z
+                ProductSorting.NameDescending => productQuery.OrderByDescending(p => p.Name), // Name Z-A
+                ProductSorting.Default => productQuery.OrderBy(p => p.Id), // Default sorting by Id (Ascending)
+                _ => productQuery.OrderBy(p => p.Id) // Default to IdAscending if no sorting is specified
+            };
+
+            // Get total products count after sorting and filtering
             var totalProducts = await productQuery.CountAsync();
 
-            // Apply pagination
+            // Apply pagination and return the paged products
             var products = await productQuery
                 .Skip((queryModel.CurrentPage - 1) * queryModel.ProductsPerPage)
                 .Take(queryModel.ProductsPerPage)
@@ -78,7 +91,6 @@ namespace LiverpoolFanShop.Core.Services
                 }).ToList()
             };
         }
-
 
         public async Task<ProductDetailsViewModel?> GetProductByIdAsync(int id)
         {
@@ -125,7 +137,7 @@ namespace LiverpoolFanShop.Core.Services
                 .AnyAsync(p => p.Name.ToLower() == name.ToLower());
         }
 
-        public async Task<IEnumerable<ProductDetailsViewModel>> GetAllProductsAsync()
+        public async Task<IEnumerable<ProductDetailsViewModel>> GetAllProductsEditAsync()
         {
             return await repository.AllReadOnly<Product>()
                 .Select(p => new ProductDetailsViewModel

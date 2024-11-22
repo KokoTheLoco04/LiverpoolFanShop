@@ -66,7 +66,7 @@ namespace LiverpoolFanShop.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> EditList()
         {
-            var products = await productService.GetAllProductsAsync();
+            var products = await productService.GetAllProductsEditAsync();
             return View(products);
         }
 

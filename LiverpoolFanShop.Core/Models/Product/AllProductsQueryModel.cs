@@ -23,8 +23,9 @@ namespace LiverpoolFanShop.Core.Models.Product
 
         public int TotalProductsCount { get; set; }
 
-        public ProductSorting Sorting { get; init; }
+        public ProductSorting Sorting { get; init; } = ProductSorting.Default;
         public IEnumerable<ProductViewModel> Products { get; set; } = new List<ProductViewModel>();
+        public List<ProductCategoryModel> Categories { get; set; } = new List<ProductCategoryModel>();
 
     }
 }
