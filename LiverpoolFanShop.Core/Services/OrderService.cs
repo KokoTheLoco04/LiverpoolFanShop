@@ -54,8 +54,8 @@ namespace LiverpoolFanShop.Core.Services
         {
             var orders = await repository.All<Order>()
             .Where(o => o.UserId == userId)
-            .Include(o => o.OrderProducts) // Load related products
-            .ThenInclude(op => op.Product) // Assuming there's a Product entity
+            .Include(o => o.OrderProducts)
+            .ThenInclude(op => op.Product)
             .Select(o => new OrderViewModel
             {
                 Id = o.Id,
@@ -109,5 +109,32 @@ namespace LiverpoolFanShop.Core.Services
                 }).ToList()
             };
         }
+
+        public async Task<IEnumerable<OrderViewModel>> GetAllOrdersAsync()
+        {
+            var orders = await repository.AllReadOnly<Order>()
+                .Include(o => o.User)
+                .Include(o => o.OrderProducts)
+                .ThenInclude(op => op.Product)
+                .ToListAsync();
+
+            return orders.Select(o => new OrderViewModel
+            {
+                Id = o.Id,
+                Address = o.Address,
+                CreatedOn = o.OrderDate,
+                ApplicationUserId = o.UserId,
+                ApplicationUser = o.User,
+                OrderProducts = o.OrderProducts.Select(op => new OrderProduct
+                {
+                    ProductId = op.ProductId,
+                    Product = op.Product,
+                    Quantity = op.Quantity,
+                    Price = op.Price
+                }).ToList()
+            });
+        }
+
+
     }
 }

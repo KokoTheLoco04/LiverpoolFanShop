@@ -1,0 +1,55 @@
+﻿@model IEnumerable<LiverpoolFanShop.Core.Models.Order.OrderViewModel>
+
+@{
+    ViewData["Title"] = "All Orders";
+}
+
+<h1>All Orders</h1>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Address</th>
+                <th>Date</th>
+                <th>Total Amount</th>
+                <th>Products</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var order in Model)
+                {
+                    <tr>
+                        <td>@order.Id</td>
+                        <td>@(order.ApplicationUser?.UserName ?? "Unknown User")</td>
+                        <td>@order.Address</td>
+                        <td>@order.CreatedOn.ToShortDateString()</td>
+                        <td>@order.TotalAmount.ToString("C")</td>
+                        <td>
+                            <ul>
+                                @foreach (var orderProduct in order.OrderProducts)
+                                {
+                                    <li>
+                                        @orderProduct.Product.Name
+                                        (Quantity: @orderProduct.Quantity,
+                                        Price: @orderProduct.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-GB")))
+                                    </li>
+                                }
+                            </ul>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6" class="text-center">No orders found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
