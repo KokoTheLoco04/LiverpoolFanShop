@@ -1,0 +1,136 @@
+﻿body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 400px;
+    margin: 50px auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #d20000;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.form-floating {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+    .form-floating input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1rem;
+        background-color: #fff;
+        color: #333;
+        box-sizing: border-box;
+    }
+
+    .form-floating label {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        padding: 0 5px;
+        font-size: 0.9rem;
+        color: #666;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .form-floating input:focus + label,
+    .form-floating input:not(:placeholder-shown) + label {
+        color: transparent;
+    }
+
+.checkbox {
+    margin-bottom: 15px;
+}
+
+    .checkbox label {
+        font-size: 0.9rem;
+    }
+
+.btn-primary {
+    background-color: #d20000;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+    .btn-primary:hover {
+        background-color: #a50000;
+    }
+
+.register-link {
+    text-align: center;
+    margin-top: 15px;
+}
+
+    .register-link a {
+        color: #d20000;
+        text-decoration: none;
+    }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+.text-danger {
+    color: #d9534f;
+}
+
+footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-top: 1px solid #ddd;
+    margin-top: 30px;
+}
+
+    footer .contact-info {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        width: 100%;
+        padding-bottom: 10px;
+    }
+
+        footer .contact-info div {
+            flex: 1;
+            padding: 5px;
+        }
+
+            footer .contact-info div span {
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            footer .contact-info div a {
+                color: #007bff;
+                text-decoration: none;
+            }
+
+                footer .contact-info div a:hover {
+                    text-decoration: underline;
+                }
+
+    footer p.copyright {
+        margin: 0;
+    }

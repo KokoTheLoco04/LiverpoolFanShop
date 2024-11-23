@@ -1,0 +1,109 @@
+﻿body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fa;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto; 
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 100px;
+}
+
+h2 {
+    color: #333;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #333;
+    font-size: 1rem;
+}
+
+input.form-control, textarea.form-control, select.form-control {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+    input.form-control:focus, textarea.form-control:focus, select.form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        outline: none;
+    }
+
+.text-danger {
+    color: #dc3545;
+    font-size: 0.9rem;
+}
+
+.row {
+    margin-bottom: 20px;
+}
+
+button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    font-size: 1.1rem;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+    button[type="submit"]:hover {
+        background-color: #0056b3;
+        cursor: pointer;
+    }
+
+select.form-control {
+    background-color: #ffffff;
+    border-color: #ddd;
+    height: 50px;
+    padding: 10px;
+    font-size: 1rem;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+}
+
+    input[type="number"]:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+.text-center {
+    text-align: center;
+    margin-top: 20px;
+}
+
+select.form-control option {
+    padding: 10px;
+}
+
+footer {
+    background-color: white;
+    color: white;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+    footer .container {
+        margin-top: 40px;
+    }

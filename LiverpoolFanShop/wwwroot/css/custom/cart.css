@@ -1,0 +1,228 @@
+﻿body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+    background: url('/images/layout/shoppingCartLogo.jpg') no-repeat center center fixed;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+}
+
+h2.text-danger {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cart-item-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 10px;
+}
+
+    .cart-item img {
+        width: 100px;
+        height: auto;
+        max-height: 100px;
+        object-fit: contain;
+        margin-right: 15px;
+        object-position: center;
+    }
+
+.card-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.cart-item .card-title .cart-item .card-text {
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: white;
+    padding: 5px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.btn-custom {
+    font-size: 0.9rem;
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.btn-custom-danger {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+}
+
+    .btn-custom-danger:hover {
+        background-color: #c82333;
+    }
+
+.btn-custom-warning {
+    background-color: #ffc107;
+    color: white;
+    border: none;
+}
+
+    .btn-custom-warning:hover {
+        background-color: #e0a800;
+    }
+
+.total-container {
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    text-align: center;
+    max-width: 500px;
+    margin: 20px auto;
+}
+
+    .total-container h3 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+.action-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+    .action-buttons button {
+        width: 100%;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        border: none;
+        font-size: 0.9rem;
+        font-weight: bold;
+    }
+
+    .action-buttons .btn-danger {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .action-buttons .btn-success {
+        background-color: #ffc107;
+        color: white;
+    }
+
+    .action-buttons button:hover {
+        opacity: 0.8;
+        color: black;
+    }
+
+.quantity-update {
+    display: flex; 
+    align-items: center; 
+    gap: 5px; 
+    justify-content: flex-start; 
+}
+
+    .quantity-update input {
+        width: 60px; 
+        height: 35px; 
+        font-size: 0.9rem;
+        text-align: center; 
+        margin: 0; 
+        padding: 0 5px;
+        box-sizing: border-box; 
+    }
+
+    .quantity-update button {
+        height: 35px;
+        font-size: 0.9rem;
+        padding: 0 10px;
+        margin: 0; 
+        box-sizing: border-box; 
+    }
+
+.empty-cart {
+    text-align: center;
+    font-size: 1.25rem;
+    color: #6c757d;
+}
+
+footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-top: 1px solid #ddd;
+    margin-top: 30px;
+}
+
+    footer .contact-info {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        width: 100%;
+        padding-bottom: 10px;
+    }
+
+        footer .contact-info div {
+            flex: 1;
+            padding: 5px;
+        }
+
+            footer .contact-info div span {
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            footer .contact-info div a {
+                color: #007bff;
+                text-decoration: none;
+            }
+
+                footer .contact-info div a:hover {
+                    text-decoration: underline;
+                }
+
+    footer p.copyright {
+        margin: 0;
+    }
+
+.navbar {
+    background-color: rgba(200, 16, 46, 0.9);
+}
+
+.navbar-brand, .nav-link {
+    color: #fff !important;
+}
+
+.navbar-nav .nav-item a .fa-cart-shopping {
+    font-size: 1.2rem;
+    margin-right: 5px;
+}
+
+.navbar-text {
+    margin-left: 10px;
+}

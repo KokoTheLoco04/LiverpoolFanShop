@@ -33,6 +33,9 @@
     <link rel="stylesheet" href="~/LiverpoolFanShop.styles.css" asp-append-version="true" />
 </head>
 <body>
+
+        @if (ViewData["HideNavbar"] == null || !(bool)ViewData["HideNavbar"])
+        {
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
             <a class="navbar-brand" href="/">Liverpool FC Fan Shop</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,6 +67,7 @@
                         </li>
                         <li class="nav-item">
                             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" method="post">
+                                <input type="hidden" name="ReturnUrl" value="/Identity/Account/Login" />
                                 <button type="submit" class="nav-link btn btn-link" style="color: white;">Logout</button>
                             </form>
                         </li>
@@ -91,6 +95,8 @@
                 </ul>
             </div>
         </nav>
+        }
+
     <div class="container" style="margin-top: 80px;">
     <main role="main" class="pb-3">
         @RenderBody()

@@ -1,10 +1,48 @@
-﻿img {
-    height: auto;
-    width: 100%;
-    object-fit: contain;
-    margin-bottom: 20px;
-    max-height: 350px;
-    object-position: center;
+﻿body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url('/images/layout/checkoutPage.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.checkout-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #333;
+}
+
+h2 {
+    color: #c8102e;
+    font-weight: bold;
+}
+
+label {
+    color: #333;
+    font-weight: bold;
+}
+
+.btn-success {
+    background-color: #c8102e;
+    border: none;
+    color: white;
+    font-weight: bold;
+}
+
+.btn-warning {
+    font-weight: bold;
+}
+
+.delivery-note {
+    color: #333;
+    font-style: italic;
 }
 
 footer {
@@ -64,37 +102,3 @@ footer {
 .navbar-text {
     margin-left: 10px;
 }
-
-.details-text {
-    color: rgba(0, 0, 0, 0.85);
-    font-weight: bold;
-}
-
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    background: url('/images/layout/anfield.jpg') no-repeat center center fixed;
-    background-size: cover;
-}
-
-.container {
-    max-width: 80%;
-    margin: auto;
-    margin-top: 70px;
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 10px;
-    padding: 20px;
-}
-
-.button-container {
-    display: flex;
-    justify-content: flex-start;
-    gap: 15px;
-    margin-top: 20px;
-}
-
-    .button-container button,
-    .button-container a {
-        flex: 1;
-    }
