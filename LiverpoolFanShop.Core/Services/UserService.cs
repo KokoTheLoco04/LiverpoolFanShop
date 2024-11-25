@@ -21,13 +21,14 @@ namespace LiverpoolFanShop.Core.Services
         }
         public async Task<IEnumerable<UserServiceModel>> AllAsync()
         {
-            return await repository.AllReadOnly<ApplicationUser>()
-                .Select(u => new UserServiceModel()
-                {
-                    Email = u.Email ?? string.Empty,
-                    FullName = $"{u.FirstName} {u.LastName}"
-                })
+            var users = await repository.AllReadOnly<ApplicationUser>()
                 .ToListAsync();
+
+            return users.Select(u => new UserServiceModel
+            {
+                Email = u.Email ?? string.Empty,
+                FullName = $"{u.FirstName} {u.LastName}"
+            });
         }
 
         public async Task<string> UserFullNameAsync(string userId)

@@ -84,7 +84,7 @@ namespace LiverpoolFanShop.Core.Services
             var order = await repository.All<Order>()
                 .Where(o => o.Id == orderId)
                 .Include(o => o.OrderProducts)
-                 .ThenInclude(op => op.Product)
+                .ThenInclude(op => op.Product)
                 .Include(o => o.User)
                 .FirstOrDefaultAsync();
 

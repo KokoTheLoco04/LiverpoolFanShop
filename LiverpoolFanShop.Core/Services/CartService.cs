@@ -78,6 +78,7 @@ namespace LiverpoolFanShop.Core.Services
             var cart = await repository.AllReadOnly<ShoppingCart>()
             .Where(c => c.UserId == userId)
             .Include(c => c.ShoppingCartProducts)
+            .ThenInclude(scp => scp.Product)
             .FirstOrDefaultAsync();
 
             if (cart == null)

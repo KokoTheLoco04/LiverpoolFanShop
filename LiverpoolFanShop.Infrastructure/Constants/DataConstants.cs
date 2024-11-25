@@ -9,7 +9,7 @@ namespace LiverpoolFanShop.Infrastructure.Constants
     public static class DataConstants
     {
         //Product
-        public const int ProductNameMinLength = 15;
+        public const int ProductNameMinLength = 12;
         public const int ProductNameMaxLength = 50;
 
         public const int DescriptionMinLength = 15;

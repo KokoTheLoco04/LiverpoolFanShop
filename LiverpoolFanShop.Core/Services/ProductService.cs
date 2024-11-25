@@ -46,34 +46,29 @@ namespace LiverpoolFanShop.Core.Services
         {
             var productQuery = repository.AllReadOnly<Product>();
 
-            // Apply search term filter (if any)
             if (!string.IsNullOrWhiteSpace(queryModel.SearchTerm))
             {
                 productQuery = productQuery.Where(p => p.Name.Contains(queryModel.SearchTerm)
                                                     || p.Description.Contains(queryModel.SearchTerm));
             }
 
-            // Apply category filter (if any)
             if (queryModel.CategoryId.HasValue)
             {
                 productQuery = productQuery.Where(p => p.CategoryId == queryModel.CategoryId);
             }
 
-            // Apply sorting based on selected sorting option
             productQuery = queryModel.Sorting switch
             {
-                ProductSorting.PriceAscending => productQuery.OrderBy(p => p.Price), // Price Low to High
-                ProductSorting.PriceDescending => productQuery.OrderByDescending(p => p.Price), // Price High to Low
-                ProductSorting.NameAscending => productQuery.OrderBy(p => p.Name), // Name A-Z
-                ProductSorting.NameDescending => productQuery.OrderByDescending(p => p.Name), // Name Z-A
-                ProductSorting.Default => productQuery.OrderBy(p => p.Id), // Default sorting by Id (Ascending)
-                _ => productQuery.OrderBy(p => p.Id) // Default to IdAscending if no sorting is specified
+                ProductSorting.PriceAscending => productQuery.OrderBy(p => p.Price),
+                ProductSorting.PriceDescending => productQuery.OrderByDescending(p => p.Price),
+                ProductSorting.NameAscending => productQuery.OrderBy(p => p.Name),
+                ProductSorting.NameDescending => productQuery.OrderByDescending(p => p.Name),
+                ProductSorting.Default => productQuery.OrderBy(p => p.Id),
+                _ => productQuery.OrderBy(p => p.Id)
             };
 
-            // Get total products count after sorting and filtering
             var totalProducts = await productQuery.CountAsync();
 
-            // Apply pagination and return the paged products
             var products = await productQuery
                 .Skip((queryModel.CurrentPage - 1) * queryModel.ProductsPerPage)
                 .Take(queryModel.ProductsPerPage)

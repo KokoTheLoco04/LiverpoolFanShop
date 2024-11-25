@@ -23,6 +23,6 @@ namespace LiverpoolFanShop.Core.Models.Order
 
         public List<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
 
-        public decimal TotalAmount => OrderProducts.Sum(op => op.Price);
+        public decimal TotalAmount => OrderProducts.Sum(op => op.Price * op.Quantity);
     }
 }
