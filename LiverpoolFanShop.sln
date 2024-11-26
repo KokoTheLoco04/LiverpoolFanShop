@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiverpoolFanShop.Core", "Li
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiverpoolFanShop.Infrastructure", "LiverpoolFanShop.Infrastructure\LiverpoolFanShop.Infrastructure.csproj", "{E44EDF8D-C54D-4E9B-81B9-A649AB095C22}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiverpoolFanShop.Tests", "LIverpoolFanShop.Tests\LiverpoolFanShop.Tests.csproj", "{C7C08FCF-4443-42CD-9135-0EE58B86D3C2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{E44EDF8D-C54D-4E9B-81B9-A649AB095C22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E44EDF8D-C54D-4E9B-81B9-A649AB095C22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E44EDF8D-C54D-4E9B-81B9-A649AB095C22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7C08FCF-4443-42CD-9135-0EE58B86D3C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7C08FCF-4443-42CD-9135-0EE58B86D3C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7C08FCF-4443-42CD-9135-0EE58B86D3C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7C08FCF-4443-42CD-9135-0EE58B86D3C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

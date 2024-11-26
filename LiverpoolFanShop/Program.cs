@@ -17,18 +17,26 @@ builder.Services.AddControllersWithViews(options =>
     .AddDataAnnotationsLocalization();
 
 builder.Services.AddApplicationServices();
+builder.Services.AddMemoryCache();
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseMigrationsEndPoint();
 }
 else
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler("/Error500");
+    app.UseStatusCodePagesWithReExecute("/Error404");
+
     app.UseHsts();
 }
+
+//app.UseExceptionHandler("/Error500");
+//app.UseStatusCodePagesWithReExecute("/Error404");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -38,18 +46,15 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseEndpoints(endpoints => 
-{ 
-    endpoints.MapControllerRoute(
-        name: "areas", 
-        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-    
-    endpoints.MapControllerRoute(
-        name: "default", 
-        pattern: "{controller=Home}/{action=Index}/{id?}"); 
-    
-    endpoints.MapRazorPages(); 
-});
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapRazorPages();
 
 await app.CreateAdminRoleAsync();
 
