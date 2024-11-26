@@ -28,7 +28,7 @@
                         <td>@(order.ApplicationUser?.UserName ?? "Unknown User")</td>
                         <td>@order.Address</td>
                         <td>@order.CreatedOn.ToShortDateString()</td>
-                        <td>@order.TotalAmount.ToString("C")</td>
+                        <td>@order.TotalAmount.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("en-GB"))</td>
                         <td>
                             <ul>
                                 @foreach (var orderProduct in order.OrderProducts)
